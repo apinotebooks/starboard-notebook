@@ -77,8 +77,7 @@ export interface RuntimeControls {
 export interface RuntimeExports {
     templates: {
         cellControls: (c: ControlsDefinition) => (TemplateResult | string);
-        icons: {
-            StarboardLogo: IconTemplate;
+        icons: {            
             AssetsAddedIcon: IconTemplate;
             DeleteIcon: IconTemplate;
             BooleanIcon: IconTemplate;
@@ -126,8 +125,7 @@ export interface RuntimeExports {
          * Libraries that are loaded asynchronously on demand.
          */
         async: {
-            KaTeX: () => Promise<typeof katex>;
-            StarboardPython: () => Promise<any>;
+            KaTeX: () => Promise<typeof katex>;           
         };
     };
 }

@@ -2,9 +2,6 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 import { textToNotebookContent } from "../content/parsing";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import { registerPython } from "starboard-python/dist/index.js";
 import { notebookContentToText } from "../content/serialization";
 /**
  * When new cell types are registered, or overwritten, the corresponding cells should update.
@@ -76,7 +73,6 @@ export function setupCommunicationWithParentFrame(runtime) {
     };
 }
 export function registerDefaultPlugins(_runtime) {
-    registerPython();
 }
 export function setupGlobalKeybindings(runtime) {
     document.addEventListener("keydown", (e) => {

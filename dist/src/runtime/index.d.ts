@@ -65,7 +65,6 @@ export interface RuntimeExports {
     templates: {
         cellControls: (c: ControlsDefinition) => (TemplateResult | string);
         icons: {
-            StarboardLogo: IconTemplate;
             AssetsAddedIcon: IconTemplate;
             DeleteIcon: IconTemplate;
             BooleanIcon: IconTemplate;
@@ -110,7 +109,6 @@ export interface RuntimeExports {
          */
         async: {
             KaTeX: () => Promise<typeof katex>;
-            StarboardPython: () => Promise<any>;
         };
     };
 }

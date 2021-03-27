@@ -43,11 +43,11 @@
 
 
 .cell-controls .cell-controls-button.auto-hide {
-    opacity: 0.2;
+    opacity: 0;
 }
 
 .cell-controls .cell-controls-button.cell-controls-button-language.auto-hide {
-    opacity: 0.67;
+    opacity: 0;
 }
 
 

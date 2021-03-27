@@ -11,7 +11,6 @@ import { LitElement, html, customElement, query, property } from 'lit-element';
 import { CellElement } from './cell';
 import { createCellProxy } from './helpers/cellProxy';
 import { AssetsAddedIcon } from '@spectrum-web-components/icons-workflow';
-import { StarboardLogo } from './logo';
 import { insertHTMLChildAtIndex } from './helpers/dom';
 import { setupRuntime } from '../runtime/create';
 let StarboardNotebookElement = class StarboardNotebookElement extends LitElement {
@@ -92,10 +91,7 @@ let StarboardNotebookElement = class StarboardNotebookElement extends LitElement
       <footer class="starboard-notebook-footer">
         <div></div>
         <div></div>
-        <div>
-          <span>${StarboardLogo({ width: 10, height: 10 })} Starboard Notebook v${this.runtime.version}
-          ${window.starboardEditUrl ? html `- <a href=${window.starboardEditUrl}>Edit on Starboard.gg</a>` : ""}
-          </span>
+        <div>         
           <button @click="${() => this.runtime.controls.insertCell("end")}" class="cell-controls-button" title="Add Cell Here" style="opacity: 0.5 !important; float: right; opacity: 1; padding: 0px 3px 0px 18px;">
           ${AssetsAddedIcon({ width: 18, height: 18 })}
         </button>

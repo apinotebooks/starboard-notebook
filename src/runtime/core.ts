@@ -8,7 +8,7 @@ import { RegistryEvent } from "./registry";
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import { registerPython } from "starboard-python/dist/index.js";
+
 import { InboundNotebookMessage } from "../messages/types";
 import { notebookContentToText } from "../content/serialization";
 
@@ -85,7 +85,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
 }
 
 export function registerDefaultPlugins(_runtime: Runtime) {
-    registerPython();
+    
 }
 
 export function setupGlobalKeybindings(runtime: Runtime) {

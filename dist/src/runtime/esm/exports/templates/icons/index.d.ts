@@ -1,4 +1,3 @@
-export declare const StarboardLogo: import("../../../..").IconTemplate;
 export declare const AssetsAddedIcon: import("../../../..").IconTemplate;
 export declare const DeleteIcon: import("../../../..").IconTemplate;
 export declare const BooleanIcon: import("../../../..").IconTemplate;

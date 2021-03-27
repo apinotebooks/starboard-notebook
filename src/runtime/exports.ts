@@ -3,7 +3,6 @@
  * file, You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { cellControlsTemplate } from "../components/controls";
-import { StarboardLogo } from "../components/logo";
 import { AssetsAddedIcon, DeleteIcon, BooleanIcon, ClockIcon, PlayCircleIcon, TextEditIcon, GearsIcon, LockClosedIcon } from "@spectrum-web-components/icons-workflow";
 import { JavascriptEvaluator } from "../cellTypes/javascript/eval";
 import { createCellProxy } from "../components/helpers/cellProxy";
@@ -15,8 +14,6 @@ import * as LitElement from "lit-element";
 import * as LitHtml from "lit-html";
 import MarkdownIt from "markdown-it";
 import * as popper from "@popperjs/core";
-// @ts-ignore
-import * as StarboardPython from "starboard-python";
 
 import { precompileJavascriptCode } from "../cellTypes/javascript/precompile";
 import * as YAML from "yaml";
@@ -32,8 +29,7 @@ export function createExports(): RuntimeExports {
     return {
       templates: {
         cellControls: cellControlsTemplate,
-        icons: {
-          StarboardLogo: StarboardLogo,
+        icons: {          
           AssetsAddedIcon: AssetsAddedIcon,
           DeleteIcon: DeleteIcon,
           BooleanIcon: BooleanIcon,
@@ -69,8 +65,7 @@ export function createExports(): RuntimeExports {
         Popper: popper,
 
         async: {
-          KaTeX: katexLoader,
-          StarboardPython: () => Promise.resolve(StarboardPython),
+          KaTeX: katexLoader,          
         },
       }
     };

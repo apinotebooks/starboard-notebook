@@ -26,7 +26,7 @@ const builtinCellTypes = [
     HTML_CELL_TYPE_DEFINITION,
     CSS_CELL_TYPE_DEFINITION,
     LATEX_CELL_TYPE_DEFINITION,
-    PLAINTEXT_CELL_TYPE_DEFINITION,
+    // PLAINTEXT_CELL_TYPE_DEFINITION,
 ];
 
 export function getCellTypeDefinitionForCellType(cellType: string): CellTypeDefinition {

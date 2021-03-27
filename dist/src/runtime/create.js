@@ -100,7 +100,7 @@ export function setupRuntime(notebook) {
                 }
             }
             const isLastCell = idxOfCell === cellElements.length - 1;
-            if (insertNewCell || isLastCell) {
+            if (insertNewCell) { // run should have no side effects || isLastCell) {
                 controls.insertCell("after", id);
             }
             if (focusNext) {

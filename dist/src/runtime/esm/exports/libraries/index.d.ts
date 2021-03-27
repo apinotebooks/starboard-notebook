@@ -5,5 +5,4 @@ export declare const YAML: typeof import("yaml");
 export declare const Popper: typeof import("@popperjs/core");
 export declare const async: {
     KaTeX: () => Promise<typeof import("katex")>;
-    StarboardPython: () => Promise<any>;
 };

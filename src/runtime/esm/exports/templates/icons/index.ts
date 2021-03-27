@@ -9,7 +9,6 @@ import {runtime} from "../../../";
  
 const l = runtime.exports.templates.icons;
 
-export const StarboardLogo = l.StarboardLogo;
 export const AssetsAddedIcon = l.AssetsAddedIcon;
 export const DeleteIcon = l.DeleteIcon;
 export const BooleanIcon = l.BooleanIcon;
