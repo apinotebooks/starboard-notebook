@@ -21,7 +21,7 @@ import { trySetLocalStorage } from "./helpers/localStorage";
 import { isATouchScreenDevice } from "./helpers/detect";
 import Dropdown from "bootstrap/js/dist/dropdown";
 
-export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python" | "latex"; // latex is not actually supported..
+export type SupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "latex"; // latex is not actually supported..
 export type WordWrapSetting = "off" | "on";
 
 const EDITOR_PREFERENCE_KEY = "starboard_notebook_text_editor_preference";

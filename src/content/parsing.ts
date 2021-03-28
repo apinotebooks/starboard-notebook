@@ -155,10 +155,6 @@ export function parseNotebookContent(notebookContentString: string) {
 
 
   for (const line of allLines.slice(cellLinesStartIndex)) {
-    
-    var ct = "no cell";
-    if(currentCell != undefined) ct = currentCell.type;
-    console.log(ct + ": " + line);
 
     if (line.trimRight() === "\`\`\`") {
       if (currentCell) {
@@ -180,18 +176,20 @@ export function parseNotebookContent(notebookContentString: string) {
       }
 
       let infoString = line.substring(3).trimLeft();
-      console.log("infoString " + infoString);
+      
       let cellParameters = "";
+      let cellMetadata = {};
       let cellType = infoString;
       let spacePos = infoString.indexOf(" ");      
       if (spacePos>1) {
         cellParameters = infoString.substring(spacePos + 1);
+        cellMetadata = JSON.parse(cellParameters);
         cellType = infoString.substring(0, spacePos);
       } 
-      console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX");
+      console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX"+cellParameters);
       currentCell = {
         type: cellType,
-        metadata: {},
+        metadata: cellMetadata,
         lines: []
       };
 
