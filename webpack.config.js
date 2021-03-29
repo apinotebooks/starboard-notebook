@@ -12,7 +12,7 @@ const pkg = require("./package.json");
 const baseConfig = {
     entry: ['./src/publicPath.ts', './src/main.ts'],
     output: {
-        path: path.resolve(__dirname, 'dist/'),
+        path: path.resolve(__dirname, '_site/'),
         filename: "starboard-notebook.js",
         chunkFilename: '[name].chunk.js',
     },
@@ -96,6 +96,26 @@ const baseConfig = {
         new HtmlWebpackPlugin({
             title: 'Starboard Notebook',
             favicon: 'static/favicon.ico',
+            hash: true,
+            templateContent: ({htmlWebpackPlugin}) => `
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Notebook Sandbox</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <link rel="icon" href="favicon.ico">    
+    <style>
+        starboard-notebook {
+            display: block;
+            min-height: 280px;
+        }
+    </style>
+</head>
+<body>    
+</body>
+</html>
+          `
         }),
         new MiniCssExtractPlugin({
             filename: "starboard-notebook.css"
@@ -105,7 +125,7 @@ const baseConfig = {
         }),
         new MonacoWebpackPlugin({
             languages: [
-                "markdown", "html", "css", "javascript", "typescript", "python", "coffee",
+                "markdown", "html", "css", "javascript", "typescript", 
             ],
             features: [
                 "!toggleHighContrast", "!gotoSymbol"
@@ -113,7 +133,7 @@ const baseConfig = {
         }),
     ],
     devServer: {
-        contentBase: path.join(__dirname, './dist/'),
+        contentBase: path.join(__dirname, './_site/'),
         compress: true,
         port: 9001,
         hot: true,
