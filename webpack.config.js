@@ -12,7 +12,7 @@ const pkg = require("./package.json");
 const baseConfig = {
     entry: ['./src/publicPath.ts', './src/main.ts'],
     output: {
-        path: path.resolve(__dirname, '_site/'),
+        path: path.resolve(__dirname, 'dist/'),
         filename: "starboard-notebook.js",
         chunkFilename: '[name].chunk.js',
     },
@@ -133,7 +133,7 @@ const baseConfig = {
         }),
     ],
     devServer: {
-        contentBase: path.join(__dirname, './_site/'),
+        contentBase: path.join(__dirname, './dist/'),
         compress: true,
         port: 9001,
         hot: true,
