@@ -28,7 +28,15 @@ export function cellToText(cell: Cell) {
     let cellHeader;
 
     // markdown cells are persisted as markdown
-    if (cell.cellType == "markdown") return cell.textContent;
+    if (cell.cellType == "markdown")  {
+        var md = cell.textContent;
+
+        // for better readability ensure that markdown cells are persisted with leading and trailing new line
+        if(!md.startsWith("\n")) md = "\n" + md;
+        if(!md.endsWith("\n")) md = md + "\n";
+
+        return md;
+    }
 
     // other cells are persisted as markdown code blocks
     if (objectIsEmpty(cell.metadata.properties) && Object.keys(cell.metadata).length === 1) {
@@ -36,7 +44,7 @@ export function cellToText(cell: Cell) {
         cellHeader = `${PreferredCellDelimiter}${cell.cellType}`;
     } else {
         cellHeader = `${PreferredCellDelimiter}${cell.cellType} `;
-        cellHeader = cellHeader + JSON.stringify(cell.metadata);
+        cellHeader = cellHeader + JSON.stringify(cell.metadata.properties);
         /*
         let ymlCellMetadata = YAML.stringify(cell.metadata);
         // Add a comment marker to each of the lines.

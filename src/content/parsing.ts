@@ -183,23 +183,15 @@ export function parseNotebookContent(notebookContentString: string) {
       let spacePos = infoString.indexOf(" ");      
       if (spacePos>1) {
         cellParameters = infoString.substring(spacePos + 1);
-        cellMetadata = JSON.parse(cellParameters);
+        cellMetadata =  { properties: JSON.parse(cellParameters)};
         cellType = infoString.substring(0, spacePos);
       } 
-      console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX"+cellParameters);
+      //console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX"+cellParameters);
       currentCell = {
         type: cellType,
         metadata: cellMetadata,
         lines: []
       };
-
-      /* todo: define metadata handling ? inline json?
-      const cellMetadataStartMatches = CellMetadataStartDelimiterRegex.exec(cellDelimiterMatches[0]);
-      if (cellMetadataStartMatches) {
-        currentlyInCellMetadataBlock = true;
-        currentCellMetadataCommentPrefix = cellMetadataStartMatches[1];
-      }
-      */
 
       cells.push(currentCell);
 
