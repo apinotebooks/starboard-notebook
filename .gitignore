@@ -16,7 +16,6 @@
 /.tmp/
 
 # build
-/dist/
 
 
 # Webpack build stats

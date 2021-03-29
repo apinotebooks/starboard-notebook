@@ -4,7 +4,6 @@
 import { html, render } from "lit-html";
 import { BaseCellHandler } from "./base";
 import { cellControlsTemplate } from "../components/controls";
-import { unsafeHTML } from "lit-html/directives/unsafe-html";
 import { PlayCircleIcon } from "@spectrum-web-components/icons-workflow";
 import { StarboardTextEditor } from "../components/textEditor";
 export const HTML_CELL_TYPE_DEFINITION = {
@@ -34,7 +33,8 @@ export class HTMLCellHandler extends BaseCellHandler {
     }
     async run() {
         const htmlContent = this.cell.textContent;
-        render(html `${unsafeHTML(htmlContent)}`, this.elements.bottomElement);
+        var frag = document.createRange().createContextualFragment(`${htmlContent}`);
+        render(html `${frag}`, this.elements.bottomElement);
     }
     focusEditor() {
         if (this.editor) {

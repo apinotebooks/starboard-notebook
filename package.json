@@ -25,7 +25,8 @@
     "start": "webpack-dev-server --mode=development",
     "test": "jest",
     "lint": "eslint src/**/*.ts test/**/*.ts",
-    "prepublishOnly": "npm i && npm t && npm run build"
+    "prepublishOnly": "npm i && npm t && npm run build",
+    "noop": "echo"
   },
   "main": "dist/starboard-notebook.js",
   "files": [
