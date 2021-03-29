@@ -48,7 +48,10 @@ export class HTMLCellHandler extends BaseCellHandler {
 
     async run() {
         const htmlContent = this.cell.textContent;
-        render(html`${unsafeHTML(htmlContent)}`, this.elements.bottomElement);
+       
+        var frag = document.createRange().createContextualFragment(`${ htmlContent }`);
+       
+        render(html `${ frag }`, this.elements.bottomElement);
     }
 
     focusEditor() {
