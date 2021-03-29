@@ -1,4 +1,4 @@
-
+[![Netlify Status](https://api.netlify.com/api/v1/badges/167babaf-21ab-4828-a1fa-3b14499b6361/deploy-status)](https://app.netlify.com/sites/apinotebooks-sandbox/deploys)
 
 # 🌑 starboard-notebook
 [![NPM badge](https://img.shields.io/npm/v/starboard-notebook)](https://www.npmjs.com/package/starboard-notebook)
