@@ -188,6 +188,8 @@ export interface Runtime {
 
     exports: RuntimeExports;
 
+    variables: {};
+
     /**
      * Internal state, don't depend on this externally
      */

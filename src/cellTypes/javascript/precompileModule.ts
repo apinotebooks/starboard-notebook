@@ -41,7 +41,10 @@ export async function precompileJavascriptCode(content: string): Promise<string>
         return node;
       },
       VariableDeclaration(node: any) {
+        
         if (node.kind !== 'var' || !isTopLevel(node)) return;
+        return; // disable the var->global magic
+
         const onlyOneDeclaration = node.declarations.length === 1;
         changes.push({
           text: onlyOneDeclaration ? 'void' : 'void (',

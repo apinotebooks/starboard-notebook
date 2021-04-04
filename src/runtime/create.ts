@@ -74,7 +74,8 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         listeners: {
           cellContentChanges: new Map<string, (()=>void)[]>()
         }
-      }
+      },
+      variables: {}
     };
 
     const controls: RuntimeControls = {

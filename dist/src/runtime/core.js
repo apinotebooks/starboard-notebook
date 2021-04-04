@@ -52,6 +52,14 @@ export function setupCommunicationWithParentFrame(runtime) {
                 if (contentHasBeenSetFromParentIframe)
                     return; // be idempotent
                 runtime.content = textToNotebookContent(msg.payload.content);
+
+                debugger;
+                // copy public metadata (so frontmatter variable names not starting with _) to variables
+                Object.keys(runtime.content.metadata).forEach(key => {
+                    console.log(key, runtime.content.metadata[key]);
+                    if(!key.startsWith("_")) runtime.variables[key] = runtime.content.metadata[key]; 
+                  });
+
                 contentHasBeenSetFromParentIframe = true;
                 nb.hasHadInitialRun = false;
                 nb.notebookInitialize();

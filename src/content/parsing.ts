@@ -33,7 +33,6 @@ export interface ParsedCell {
 
 export function textToNotebookContent(text: string) {
   const { cells: parsedCells, metadata } = parseNotebookContent(text);
-
   const cells: Cell[] = parsedCells.map((pc) => {
     const cellMetadata = {
       properties: {}, // The properties key is always present
