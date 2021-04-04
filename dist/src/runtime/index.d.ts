@@ -158,6 +158,7 @@ export interface Runtime {
      */
     controls: RuntimeControls;
     exports: RuntimeExports;
+    variables: {};
     /**
      * Internal state, don't depend on this externally
      */

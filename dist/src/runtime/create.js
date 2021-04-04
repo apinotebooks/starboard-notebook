@@ -57,7 +57,8 @@ export function setupRuntime(notebook) {
             listeners: {
                 cellContentChanges: new Map()
             }
-        }
+        },
+        variables: {}
     };
     const controls = {
         insertCell(position, adjacentCellId) {
