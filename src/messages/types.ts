@@ -15,5 +15,5 @@ export type NotebookMessageContentData = string;
  */
 export type NotebookMessage<Name extends string, PayloadType> = {
     type: Name;
-    payload: PayloadType;
+    payload: PayloadType;    
 };

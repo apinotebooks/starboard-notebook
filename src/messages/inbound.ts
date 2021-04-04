@@ -7,6 +7,7 @@ import { NotebookMessage, NotebookMessageContentData } from "./types";
 export interface NotebookInitPayload {
     content: NotebookMessageContentData;
     baseUrl?: string;
+    variables?: any;
 }
 
 export type InboundNotebookMessage = SetContentMessage | ReloadMessage;
