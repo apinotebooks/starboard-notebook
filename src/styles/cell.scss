@@ -39,7 +39,8 @@ starboard-cell:focus {
 starboard-cell:not(:focus):not(:focus-within) {
     .cell-container.collapsed {
         .cell-top,
-        .cell-bottom,
+        // .cell-bottom, -- when cell is collapsed only console output should be hidden
+        .starboard-console-output,
         .cell-controls-left-top,
         .cell-controls-left-bottom,
         .cell-gutter-top,
