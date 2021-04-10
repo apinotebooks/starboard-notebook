@@ -180,12 +180,18 @@ export function parseNotebookContent(notebookContentString: string) {
       let cellMetadata = {};
       let cellType = infoString;
       let spacePos = infoString.indexOf(" ");      
-      if (spacePos>1) {
-        cellParameters = infoString.substring(spacePos + 1);
-        cellMetadata =  { properties: JSON.parse(cellParameters)};
+      if (spacePos>1) {        
         cellType = infoString.substring(0, spacePos);
+        cellParameters = infoString.substring(spacePos + 1);
+        if(!cellParameters.startsWith("{")) {
+          // join cell subtype
+          spacePos = cellParameters.indexOf(" ");
+          cellType = cellType + "-"  + cellParameters.substring(0,spacePos);
+          cellParameters = cellParameters.substring(spacePos + 1);
+        }
+        cellMetadata =  { properties: JSON.parse(cellParameters)};        
       } 
-      //console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX"+cellParameters);
+      console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX"+cellParameters);
       currentCell = {
         type: cellType,
         metadata: cellMetadata,

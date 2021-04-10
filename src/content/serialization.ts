@@ -26,6 +26,7 @@ export function notebookContentToText(nb: NotebookContent) {
 export function cellToText(cell: Cell) {
 
     let cellHeader;
+    let cellType = cell.cellType.replace("-"," "); // splitt cell subtype
 
     // markdown cells are persisted as markdown
     if (cell.cellType == "markdown")  {
@@ -41,9 +42,9 @@ export function cellToText(cell: Cell) {
     // other cells are persisted as markdown code blocks
     if (objectIsEmpty(cell.metadata.properties) && Object.keys(cell.metadata).length === 1) {
         // The cell metadata is empty
-        cellHeader = `${PreferredCellDelimiter}${cell.cellType}`;
+        cellHeader = `${PreferredCellDelimiter}${cellType}`;
     } else {
-        cellHeader = `${PreferredCellDelimiter}${cell.cellType} `;
+        cellHeader = `${PreferredCellDelimiter}${cellType} `;
         cellHeader = cellHeader + JSON.stringify(cell.metadata.properties);
         /*
         let ymlCellMetadata = YAML.stringify(cell.metadata);

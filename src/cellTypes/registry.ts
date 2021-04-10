@@ -10,7 +10,7 @@ import { CSS_CELL_TYPE_DEFINITION } from "./css";
 import { Cell } from "../types";
 import { Runtime, CellTypeDefinition } from "../runtime";
 import { MapRegistry } from "../runtime/registry";
-import { ES_MODULE_CELL_TYPE_DEFINITION } from "./esm/esm";
+import { ES_MODULE_CELL_TYPE_DEFINITION } from "./javascript-esm/javascript-esm";
 import { LATEX_CELL_TYPE_DEFINITION } from "./latex";
 
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
