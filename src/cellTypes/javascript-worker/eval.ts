@@ -4,27 +4,32 @@
 
 /* Adapted from jsconsole, MIT licensed */
 
+import { Cell } from "../../types";
 import { promiseState } from './util';
- 
+
 declare global {
   interface Window {
     $_: any;
     eval: (command: string) => any;
+    runtime: any;
   }
 }
 
 interface RunResult {
-    error: boolean;
-    code: string;
-    value?: any;
+  error: boolean;
+  code: string;
+  value?: any;
 }
 
 export class JavascriptEvaluator {
-  public async run(code: string): Promise<RunResult> {
+  public async run(cell: Cell): Promise<RunResult> {
+
     const res: RunResult = {
       error: false,
-      code,
+      code: cell.textContent,
     };
+
+    var code = cell.textContent;
 
     try {
       // // trick from devtools
@@ -41,32 +46,32 @@ export class JavascriptEvaluator {
         return res;
       }
 
-      let AsyncFunction = Object.getPrototypeOf(async function(){}).constructor;
-      let worker = new AsyncFunction('request', 'context', 
-      `${code}
-      
-      return await handleRequest(request, context);`);
-      
-      //const cellResult = await window.eval(codeToRun);
-      const cellResult = await worker("r", "c");
-      debugger;
-      if (cellResult === undefined) {
-        res.value = undefined;
-        (window)["$_"] = res.value;
+      var previousResult = window.runtime.controls.previousResponse(cell.id);
+      if (!previousResult) {
+        res.error = true;
+        res.value = "Previous cell not yet executed";
+        cell.response = undefined;
         return res;
       }
 
-      const state = await promiseState(cellResult.returnValue);
-      if (state === "fulfilled") { // Result is either a promise that was awaited, or an not a promise.
-        res.value = await cellResult.returnValue;
-      } else { // Result is a promise that was not awaited, "finish" the cell.
-        res.value = cellResult.returnValue;
-      }
-      (window)["$_"] = res.value;
+      let AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
+      let worker = new AsyncFunction('request', 'context',
+        `${code}
+      
+      return await handleRequest(request, context);`);
 
+      //const cellResult = await window.eval(codeToRun);      
+      var context = { runtime: window.runtime };
+      const cellResult = await worker(previousResult, context);
+      debugger;
+
+      res.value = cellResult;
+      cell.response = res.value;
+      (window)["$_"] = res.value;
       return res;
 
     } catch (error) {
+      cell.response = undefined;
       res.error = true;
       res.value = error;
       return res;

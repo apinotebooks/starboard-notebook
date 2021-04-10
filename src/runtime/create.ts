@@ -17,7 +17,8 @@ import { CellElement } from "../components/cell";
 import { registerDefaultPlugins, setupCommunicationWithParentFrame, setupGlobalKeybindings, updateCellsWhenCellDefinitionChanges } from "./core";
 import { createExports } from "./exports";
 import { OutboundNotebookMessage } from "../messages/types";
- 
+import { runtime } from "./esm";
+
 declare const STARBOARD_NOTEBOOK_VERSION: string;
 
 function getInitialContent() {
@@ -49,185 +50,230 @@ function getConfig() {
 }
 
 export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
-    const content = getInitialContent();
-  
-    /** Runtime without any of the functions **/
-    const rt = {
-      consoleCatcher: new ConsoleCatcher(window.console),
-      content,
-      config: getConfig(),
-      dom: {
-        cells: [] as CellElement[],
-        notebook,
-      },
-      definitions: {
-        cellTypes: cellTypeRegistry,
-        cellProperties: cellPropertiesRegistry,
-      },
-      name: "starboard-notebook" as const,
-      version: STARBOARD_NOTEBOOK_VERSION,
+  const content = getInitialContent();
 
-      // These are set below
-      controls: null as any,
-      exports: null as any,
-      internal: {
-        listeners: {
-          cellContentChanges: new Map<string, (()=>void)[]>()
+  /** Runtime without any of the functions **/
+  const rt = {
+    consoleCatcher: new ConsoleCatcher(window.console),
+    content,
+    config: getConfig(),
+    dom: {
+      cells: [] as CellElement[],
+      notebook,
+    },
+    definitions: {
+      cellTypes: cellTypeRegistry,
+      cellProperties: cellPropertiesRegistry,
+    },
+    name: "starboard-notebook" as const,
+    version: STARBOARD_NOTEBOOK_VERSION,
+
+    // These are set below
+    controls: null as any,
+    exports: null as any,
+    internal: {
+      listeners: {
+        cellContentChanges: new Map<string, (() => void)[]>()
+      }
+    },
+    variables: {}
+  };
+
+  const controls: RuntimeControls = {
+    insertCell(position: "end" | "before" | "after", adjacentCellId?: string) {
+      addCellToNotebookContent(rt, rt.content, position, adjacentCellId);
+      notebook.performUpdate();
+      controls.contentChanged();
+    },
+
+    removeCell(id: string) {
+      removeCellFromNotebookById(rt.content, id);
+      notebook.performUpdate();
+      controls.contentChanged();
+    },
+
+    changeCellType(id: string, newCellType: string) {
+      changeCellType(rt.content, id, newCellType);
+      rt.dom.cells.forEach(c => {
+        if (c.cell.id === id) {
+          c.remove();
         }
-      },
-      variables: {}
-    };
+      });
+      notebook.performUpdate();
+      controls.contentChanged();
+    },
 
-    const controls: RuntimeControls = {
-        insertCell(position: "end" | "before" | "after", adjacentCellId?: string) {
-          addCellToNotebookContent(rt, rt.content, position, adjacentCellId);
-          notebook.performUpdate();
-          controls.contentChanged();
-        },
-      
-        removeCell(id: string) {
-          removeCellFromNotebookById(rt.content, id);
-          notebook.performUpdate();
-          controls.contentChanged();
-        },
-      
-        changeCellType(id: string, newCellType: string) {
-          changeCellType(rt.content, id, newCellType);
-          rt.dom.cells.forEach(c => {
-            if (c.cell.id === id) {
-              c.remove();
-            }
-          });
-          notebook.performUpdate();
-          controls.contentChanged();
-        },
+    resetCell(id: string) {
+      rt.dom.cells.forEach(c => {
+        if (c.id === id) {
+          c.remove();
+        }
+      });
+      notebook.performUpdate();
+    },
 
-        resetCell(id: string) {
-          rt.dom.cells.forEach(c => {
-            if (c.id === id) {
-              c.remove();
-            }
-          });
-          notebook.performUpdate();
-        },
-      
-        runCell(id: string, focusNext: boolean, insertNewCell: boolean) {
-          const cellElements = rt.dom.cells;
-      
-          let idxOfCell = -1;
-          for (let i = 0; i < cellElements.length; i++) {
-            const cellElement = cellElements[i];
-            if (cellElement.cell.id === id) {
-              idxOfCell = i;
-              cellElement.run();
-              break; // IDs should be unique, so after we find it we can stop searching.
-            }
-          }
-          const isLastCell = idxOfCell === cellElements.length - 1;
-      
-          if (insertNewCell) { // run should have no side effects || isLastCell) {
-            controls.insertCell("after", id);
-          }
+    runCell(id: string, focusNext: boolean, insertNewCell: boolean) {
+      const cellElements = rt.dom.cells;
 
-          if (focusNext) {
-            window.setTimeout(() => {
-              const next = cellElements[idxOfCell + 1];
-              if (next) next.focusEditor();
-            });
-          }
-        },
-      
-        save() {
-          const couldSave = controls.sendMessage({ type: "NOTEBOOK_SAVE_REQUEST", payload: {
+      let idxOfCell = -1;
+      for (let i = 0; i < cellElements.length; i++) {
+        const cellElement = cellElements[i];
+        if (cellElement.cell.id === id) {
+          idxOfCell = i;
+          cellElement.run();
+          break; // IDs should be unique, so after we find it we can stop searching.
+        }
+      }
+      const isLastCell = idxOfCell === cellElements.length - 1;
+
+      if (insertNewCell) { // run should have no side effects || isLastCell) {
+        controls.insertCell("after", id);
+      }
+
+      if (focusNext) {
+        window.setTimeout(() => {
+          const next = cellElements[idxOfCell + 1];
+          if (next) next.focusEditor();
+        });
+      }
+    },
+
+    save() {
+      const couldSave = controls.sendMessage({
+        type: "NOTEBOOK_SAVE_REQUEST", payload: {
+          content: notebookContentToText(rt.content)
+        }
+      });
+      if (!couldSave) {
+        console.error("Can't save as parent frame is not listening for messages");
+      }
+      return couldSave;
+    },
+
+    async runAllCells(opts: { onlyRunOnLoad?: boolean } = {}) {
+      let cellElement: CellElement | null = rt.dom.cells[0] || null;
+
+      while (cellElement) {
+        if (opts.onlyRunOnLoad && !cellElement.cell.metadata.properties.run_on_load) {
+          // Don't run this cell..
+        } else {
+          await cellElement.run();
+        }
+        cellElement = cellElement.nextSibling as CellElement | null;
+      }
+
+    },
+
+    sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean {
+      if (window.parentIFrame) {
+        window.parentIFrame.sendMessage(message, targetOrigin);
+        return true;
+      }
+      return false;
+    },
+
+    /**
+    * To be called when the notebook content text changes in any way.
+    */
+    contentChanged: debounce(
+      function () {
+        controls.sendMessage(({
+          type: "NOTEBOOK_CONTENT_UPDATE", payload: {
             content: notebookContentToText(rt.content)
-          }});
-          if (!couldSave) {
-            console.error("Can't save as parent frame is not listening for messages");
           }
-          return couldSave;
-        },
-      
-        async runAllCells(opts: {onlyRunOnLoad?: boolean} = {}) {
-          let cellElement: CellElement | null = rt.dom.cells[0] || null;
+        }));
+      },
+      100
+    ),
 
-          while(cellElement) {
-            if (opts.onlyRunOnLoad && !cellElement.cell.metadata.properties.run_on_load) {
-              // Don't run this cell..
-            } else {
-              await cellElement.run();
-            }
-            cellElement = cellElement.nextSibling as CellElement | null;
-          }
+    emit(event: CellEvent) {
+      if (event.type === "RUN_CELL") {
+        controls.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
+      } else if (event.type === "INSERT_CELL") {
+        controls.insertCell(event.position, event.id);
+      } else if (event.type === "REMOVE_CELL") {
+        controls.removeCell(event.id);
+      } else if (event.type === "CHANGE_CELL_TYPE") {
+        controls.changeCellType(event.id, event.newCellType);
+      } else if (event.type === "RESET_CELL") {
+        controls.resetCell(event.id);
+      } else if (event.type === "SAVE") {
+        controls.save();
+      }
+    },
 
-        },
+    subscribeToCellChanges(id: string, callback: () => any) {
+      const listeners = rt.internal.listeners.cellContentChanges.get(id);
+      if (listeners !== undefined) {
+        listeners.push(callback);
+      } else {
+        rt.internal.listeners.cellContentChanges.set(id, [callback]);
+      }
+    },
 
-        sendMessage(message: OutboundNotebookMessage, targetOrigin?: string): boolean {
-          if (window.parentIFrame) {
-            window.parentIFrame.sendMessage(message, targetOrigin);
-            return true;
-          }
-          return false;
-        },
+    unsubscribeToCellChanges(id: string, callback: () => any) {
+      const listeners = rt.internal.listeners.cellContentChanges.get(id);
+      if (!listeners) return;
 
-       /**
-       * To be called when the notebook content text changes in any way.
-       */
-        contentChanged: debounce(
-          function() {
-            controls.sendMessage(({ type: "NOTEBOOK_CONTENT_UPDATE", payload: {
-              content: notebookContentToText(rt.content)
-            }}));
-          },
-          100
-        ),
+      const idx = listeners.indexOf(callback);
+      if (idx === -1) return;
+      listeners.splice(idx, 1);
+    },
 
-        emit (event: CellEvent) {
-          if (event.type === "RUN_CELL") {
-            controls.runCell(event.id, !!event.focusNextCell, !!event.insertNewCell);
-          } else if (event.type === "INSERT_CELL") {
-            controls.insertCell(event.position, event.id);
-          } else if (event.type === "REMOVE_CELL") {
-            controls.removeCell(event.id);
-          } else if (event.type === "CHANGE_CELL_TYPE") {
-            controls.changeCellType(event.id, event.newCellType);
-          } else if (event.type === "RESET_CELL") {
-            controls.resetCell(event.id);
-          } else if (event.type === "SAVE") {
-            controls.save();
-          }
-        },
+    previousResponse(cellId: string): any {
+      const cellElements = rt.content.cells;
 
-        subscribeToCellChanges(id: string, callback: () => any) {
-          const listeners = rt.internal.listeners.cellContentChanges.get(id);
-          if (listeners !== undefined) {
-            listeners.push(callback);
-          } else {
-            rt.internal.listeners.cellContentChanges.set(id, [callback]);
-          }
-        },
+      // find index of current cell
+      let idxOfCell = -1;      
+      for (let i = cellElements.length - 1; i >= 0; i--) {
+        const cell = cellElements[i];
+        if (cell.id === cellId) {          
+          idxOfCell = i;
+          break; // IDs should be unique, so after we find it we can stop searching.
+        }
+      }
 
-        unsubscribeToCellChanges(id: string, callback: () => any) {
-          const listeners = rt.internal.listeners.cellContentChanges.get(id);
-          if (!listeners) return;
+      if (idxOfCell == 0) {
+        // first cell uses container variables as request
+        return rt.variables;
+      }
 
-          const idx = listeners.indexOf(callback);
-          if (idx === -1) return;
-          listeners.splice(idx, 1);
-        },
-    };
+      // find previous worker cell
+      let idxOfPrevCell = -1;
+      for (let i =  idxOfCell - 1; i >= 0; i--) {
+        const cell = cellElements[i];
+        var ct = rt.definitions.cellTypes.get(cell.cellType);
+        if(ct && ct.worker === true) {          
+          idxOfPrevCell = i;
+          break; // found previous work cell
+        }
+      }
 
-    rt.controls = controls;
-    rt.exports = createExports();
+      if(idxOfPrevCell==-1) {
+        // no previous worker cell, use container variables as request
+        return rt.variables;
+      } else {
+        // return response of previous worker cell
+        var cell = cellElements[idxOfPrevCell];
+        return cell.response;
+      }      
 
-    setupGlobalKeybindings(rt);
+      return undefined;
+    }
+  };
 
-    /** Initialize certain functionality */
-    updateCellsWhenCellDefinitionChanges(rt);
+  rt.controls = controls;
+  rt.exports = createExports();
 
-    (window as any).runtime = rt;
-  
-    setupCommunicationWithParentFrame(rt);
-    registerDefaultPlugins(rt);
-    
-    return rt;
+  setupGlobalKeybindings(rt);
+
+  /** Initialize certain functionality */
+  updateCellsWhenCellDefinitionChanges(rt);
+
+  (window as any).runtime = rt;
+
+  setupCommunicationWithParentFrame(rt);
+  registerDefaultPlugins(rt);
+
+  return rt;
 }

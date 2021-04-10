@@ -131,8 +131,7 @@ export class MarkdownCellHandler extends BaseCellHandler {
         render(this.getControls(), this.elements.topControlsElement);
     }
 
-    async run() {
-        debugger;
+    async run() {        
         this.editMode = "display";
         const topElement = this.elements.topElement;
 

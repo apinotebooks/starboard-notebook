@@ -68,7 +68,7 @@ export class JavascriptWorkerCellHandler extends BaseCellHandler {
     }
 
     async run() {
-        debugger;
+       
         this.lastRunId++;
         const currentRunId = this.lastRunId;
         this.isCurrentlyRunning = true;
@@ -81,7 +81,7 @@ export class JavascriptWorkerCellHandler extends BaseCellHandler {
         htmlOutput.classList.add("cell-output-html");
         render(html`${this.outputElement}${htmlOutput}`, this.elements.bottomElement);
 
-        const outVal = await this.jsRunner.run(this.cell.textContent);
+        const outVal = await this.jsRunner.run(this.cell);
 
         // Not entirely sure this is necessary anymore, but we had to wait one tick with unhooking
         // as some console messages are delayed by one tick it seems.

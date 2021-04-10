@@ -67,6 +67,8 @@ export interface RuntimeControls {
      */
     subscribeToCellChanges(id: string, callback: () => void):  void;
     unsubscribeToCellChanges(id: string, callback: () => void):  void;
+        
+    previousResponse(cellId: string): any;
 }
 
 
@@ -198,7 +200,7 @@ export interface Runtime {
             cellContentChanges: Map<string, (()=>void)[]>;
         };
     };
-    
+
 }
 
 /**
