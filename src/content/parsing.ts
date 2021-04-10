@@ -189,8 +189,10 @@ export function parseNotebookContent(notebookContentString: string) {
           spacePos = cellParameters.indexOf(" ");
           cellType = cellType + "-" + cellParameters.substring(0, spacePos);
           cellParameters = cellParameters.substring(spacePos + 1);
+          console.log("cellType spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
         }
         cellMetadata = { properties: JSON.parse(cellParameters) };
+        
       }
       console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
       currentCell = {
