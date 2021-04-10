@@ -17,6 +17,7 @@ import { commentKeymap } from "@codemirror/next/comment";
 
 import { markdown } from "@codemirror/next/lang-markdown";
 import { javascript } from "@codemirror/next/lang-javascript";
+import { json } from "@codemirror/next/lang-json";
 import { python } from "@codemirror/next/lang-python";
 import { css } from "@codemirror/next/lang-css";
 import { html } from "@codemirror/next/lang-html";
@@ -180,6 +181,7 @@ export function createCodeMirrorEditor(element: HTMLElement, cell: Cell, opts: {
                     extensions: [
                         ...commonExtensions,
                         ...(opts.language === "javascript" ? [javascript()] : []),
+                        ...(opts.language === "json" ? [json()] : []),
                         ...(opts.language === "python" ? [python()] : []),
                         ...(opts.language === "css" ? [css()] : []),
                         ...(opts.language === "html" ? [html()] : []),

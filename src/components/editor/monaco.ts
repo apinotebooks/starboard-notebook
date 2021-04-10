@@ -8,7 +8,7 @@ import { WordWrapSetting } from '../textEditor';
 import { CellEvent, Cell } from '../../types';
 import { Runtime } from '../../runtime';
 
-export type MonacoEditorSupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "python";
+export type MonacoEditorSupportedLanguage = "javascript" | "typescript" | "markdown" | "css" | "html" | "json" | "python";
 
 monaco.editor.defineTheme('starboard-theme', {
     base: 'vs',
@@ -118,6 +118,7 @@ function addEditorKeyboardShortcuts(
 }
 
 export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: WordWrapSetting}, runtime: Runtime) {
+    debugger;
     const editor = monaco.editor.create(element, {
         value: cell.textContent,
         language: opts.language,
