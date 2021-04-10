@@ -17,6 +17,7 @@ import { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 export const JAVASCRIPT_WORKER_CELL_TYPE_DEFINITION = {
     name: "Javascript Worker",
     cellType: ["javascript-worker"],
+    worker: true,
     createHandler: function (c: Cell, r: Runtime) {
         if (!c.textContent) c.textContent =
             `
@@ -67,6 +68,7 @@ export class JavascriptWorkerCellHandler extends BaseCellHandler {
     }
 
     async run() {
+        debugger;
         this.lastRunId++;
         const currentRunId = this.lastRunId;
         this.isCurrentlyRunning = true;

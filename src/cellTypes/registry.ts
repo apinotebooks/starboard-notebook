@@ -17,6 +17,7 @@ import { LATEX_CELL_TYPE_DEFINITION } from "./latex";
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",
     cellType: ["plaintext", "raw"],
+    worker: false,
     createHandler: (c: Cell, r: Runtime) => new DefaultCellHandler(c, r),
 };
 
@@ -40,6 +41,7 @@ export function getCellTypeDefinitionForCellType(cellType: string): CellTypeDefi
             ...DEFAULT_CELL_TYPE_DEFINITION,
             cellType: cellType,
             name: `Unknown type "${cellType}"`,
+            worker: false
         };
     }
 }

@@ -34,13 +34,16 @@ export function addCellToNotebookContent(runtime: Runtime, nb: NotebookContent, 
     if (position === "after") {
         idx += 1;
     }
-    id = id || generateUniqueCellId();
+    
+    id = id || generateUniqueCellId();    
     const cell: Cell = {
             cellType,
             textContent: "",
             metadata: {properties: {}, ...(runtime.config.persistCellIds ? {id} : {})},
             id,
+            response: undefined
     };
+
     nb.cells.splice(idx, 0, cell);
 }
 

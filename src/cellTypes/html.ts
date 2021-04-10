@@ -15,6 +15,7 @@ import { Runtime, CellElements, CellHandlerAttachParameters, ControlButton } fro
 export const HTML_CELL_TYPE_DEFINITION = {
     name: "HTML",
     cellType: "html",
+    worker: false,
     createHandler: (c: Cell, r: Runtime) => new HTMLCellHandler(c, r),
 };
 

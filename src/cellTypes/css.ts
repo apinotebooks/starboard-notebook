@@ -12,6 +12,7 @@ import { Runtime, CellElements, CellHandlerAttachParameters } from "../runtime";
 export const CSS_CELL_TYPE_DEFINITION = {
     name: "CSS",
     cellType: "css",
+    worker: false,
     createHandler: (c: Cell, r: Runtime) => new CSSCellHandler(c, r),
 };
 
