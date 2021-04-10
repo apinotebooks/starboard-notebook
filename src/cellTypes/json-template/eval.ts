@@ -7,6 +7,8 @@
 import { Cell } from "../../types";
 import { promiseState } from './util';
 
+import * as ACData from "adaptivecards-templating";
+
 declare global {
   interface Window {
     $_: any;
@@ -46,6 +48,11 @@ export class JsonTemplateEvaluator {
         return res;
       }
 
+      var templatePayload = JSON.parse(cell.textContent);
+
+      // Create a Template instance from the template payload
+      var template = new ACData.Template(templatePayload);
+
       var previousResult = window.runtime.controls.previousResponse(cell.id);
       if (!previousResult) {
         res.error = true;
@@ -54,16 +61,16 @@ export class JsonTemplateEvaluator {
         return res;
       }
 
-      let AsyncFunction = Object.getPrototypeOf(async function () { }).constructor;
-      let worker = new AsyncFunction('request', 'context',
-        `${code}
-      
-      return await handleRequest(request, context);`);
+      // Create a data binding context, and set its $root property to the
+      // data object to bind the template to
+      var context: ACData.IEvaluationContext = {
+        $root: previousResult
+      };
 
-      //const cellResult = await window.eval(codeToRun);      
-      var context = { runtime: window.runtime };
-      const cellResult = JSON.parse(cell.textContent);
-
+      // "Expand" the template - this generates the final Adaptive Card,
+      // ready to render
+      var cellResult = template.expand(context);
+debugger;
       res.value = cellResult;
       cell.response = res.value;
       (window)["$_"] = res.value;
