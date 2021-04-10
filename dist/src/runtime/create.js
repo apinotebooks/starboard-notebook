@@ -113,9 +113,11 @@ export function setupRuntime(notebook) {
             }
         },
         save() {
-            const couldSave = controls.sendMessage({ type: "NOTEBOOK_SAVE_REQUEST", payload: {
+            const couldSave = controls.sendMessage({
+                type: "NOTEBOOK_SAVE_REQUEST", payload: {
                     content: notebookContentToText(rt.content)
-                } });
+                }
+            });
             if (!couldSave) {
                 console.error("Can't save as parent frame is not listening for messages");
             }
@@ -144,9 +146,11 @@ export function setupRuntime(notebook) {
         * To be called when the notebook content text changes in any way.
         */
         contentChanged: debounce(function () {
-            controls.sendMessage(({ type: "NOTEBOOK_CONTENT_UPDATE", payload: {
+            controls.sendMessage(({
+                type: "NOTEBOOK_CONTENT_UPDATE", payload: {
                     content: notebookContentToText(rt.content)
-                } }));
+                }
+            }));
         }, 100),
         emit(event) {
             if (event.type === "RUN_CELL") {
@@ -186,6 +190,42 @@ export function setupRuntime(notebook) {
                 return;
             listeners.splice(idx, 1);
         },
+        previousResponse(cellId) {
+            const cellElements = rt.content.cells;
+            // find index of current cell
+            let idxOfCell = -1;
+            for (let i = cellElements.length - 1; i >= 0; i--) {
+                const cell = cellElements[i];
+                if (cell.id === cellId) {
+                    idxOfCell = i;
+                    break; // IDs should be unique, so after we find it we can stop searching.
+                }
+            }
+            if (idxOfCell == 0) {
+                // first cell uses container variables as request
+                return rt.variables;
+            }
+            // find previous worker cell
+            let idxOfPrevCell = -1;
+            for (let i = idxOfCell - 1; i >= 0; i--) {
+                const cell = cellElements[i];
+                var ct = rt.definitions.cellTypes.get(cell.cellType);
+                if (ct && ct.worker === true) {
+                    idxOfPrevCell = i;
+                    break; // found previous work cell
+                }
+            }
+            if (idxOfPrevCell == -1) {
+                // no previous worker cell, use container variables as request
+                return rt.variables;
+            }
+            else {
+                // return response of previous worker cell
+                var cell = cellElements[idxOfPrevCell];
+                return cell.response;
+            }
+            return undefined;
+        }
     };
     rt.controls = controls;
     rt.exports = createExports();

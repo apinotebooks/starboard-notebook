@@ -5,6 +5,7 @@ declare type EditMode = "wysiwyg" | "code" | "display";
 export declare const MARKDOWN_CELL_TYPE_DEFINITION: {
     name: string;
     cellType: string[];
+    worker: boolean;
     createHandler: (c: Cell, r: Runtime) => MarkdownCellHandler;
 };
 export declare class MarkdownCellHandler extends BaseCellHandler {

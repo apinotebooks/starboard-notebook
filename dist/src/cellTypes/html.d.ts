@@ -4,6 +4,7 @@ import { Runtime, CellHandlerAttachParameters } from "../runtime";
 export declare const HTML_CELL_TYPE_DEFINITION: {
     name: string;
     cellType: string;
+    worker: boolean;
     createHandler: (c: Cell, r: Runtime) => HTMLCellHandler;
 };
 export declare class HTMLCellHandler extends BaseCellHandler {

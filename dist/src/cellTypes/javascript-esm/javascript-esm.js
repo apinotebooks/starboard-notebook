@@ -11,6 +11,7 @@ import { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 export const ES_MODULE_CELL_TYPE_DEFINITION = {
     name: "ES Module",
     cellType: "javascript-esm",
+    worker: false,
     createHandler: (c, r) => new ESModuleCellHandler(c, r),
 };
 export class ESModuleCellHandler extends BaseCellHandler {

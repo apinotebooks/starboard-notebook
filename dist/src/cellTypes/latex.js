@@ -10,6 +10,7 @@ import { katexLoader } from "../components/helpers/katex";
 export const LATEX_CELL_TYPE_DEFINITION = {
     name: "LateX (KaTeX)",
     cellType: ["latex"],
+    worker: false,
     createHandler: (c, r) => new LatexCellHandler(c, r),
 };
 export class LatexCellHandler extends BaseCellHandler {

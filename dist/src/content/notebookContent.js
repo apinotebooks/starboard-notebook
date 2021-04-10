@@ -34,6 +34,7 @@ export function addCellToNotebookContent(runtime, nb, position, adjacentCellId, 
         textContent: "",
         metadata: { properties: {}, ...(runtime.config.persistCellIds ? { id } : {}) },
         id,
+        response: undefined
     };
     nb.cells.splice(idx, 0, cell);
 }

@@ -52,6 +52,10 @@ export interface Cell {
      * It has to be unique within this notebook.
      */
     id: string;
+    /**
+    * last response from worker components
+    */
+    response: any;
 }
 export interface NotebookMetadata {
     title?: string;
@@ -76,7 +80,6 @@ export interface NotebookContent {
     cells: Cell[];
 }
 export interface CellTypeDefinition {
-    createHandler(cell: Cell, runtime: Runtime): CellHandler;
     /**
      * Name for human consumption, e.g. "Javascript"
      */
@@ -86,6 +89,11 @@ export interface CellTypeDefinition {
      * If multiple identifiers are defined, the first one is the preferred one.
      */
     cellType: string | string[];
+    /**
+     * Worker cells process request and return response
+     */
+    worker: boolean;
+    createHandler(cell: Cell, runtime: Runtime): CellHandler;
 }
 /**
  * A CellHandler contains the actual logic of a cell.

@@ -4,6 +4,8 @@
 import { DefaultCellHandler, DEFAULT_CELL_TYPE_DEFINITION } from "./default";
 import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
 import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
+import { JAVASCRIPT_WORKER_CELL_TYPE_DEFINITION } from "./javascript-worker/javascript-worker";
+import { JSON_TEMPLATE_CELL_TYPE_DEFINITION } from "./json-template/json-template";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
 import { MapRegistry } from "../runtime/registry";
@@ -12,11 +14,14 @@ import { LATEX_CELL_TYPE_DEFINITION } from "./latex";
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",
     cellType: ["plaintext", "raw"],
+    worker: false,
     createHandler: (c, r) => new DefaultCellHandler(c, r),
 };
 const builtinCellTypes = [
     MARKDOWN_CELL_TYPE_DEFINITION,
     JAVASCRIPT_CELL_TYPE_DEFINITION,
+    JAVASCRIPT_WORKER_CELL_TYPE_DEFINITION,
+    JSON_TEMPLATE_CELL_TYPE_DEFINITION,
     ES_MODULE_CELL_TYPE_DEFINITION,
     HTML_CELL_TYPE_DEFINITION,
     CSS_CELL_TYPE_DEFINITION,
@@ -32,6 +37,7 @@ export function getCellTypeDefinitionForCellType(cellType) {
             ...DEFAULT_CELL_TYPE_DEFINITION,
             cellType: cellType,
             name: `Unknown type "${cellType}"`,
+            worker: false
         };
     }
 }

@@ -28,6 +28,7 @@ export function textToNotebookContent(text) {
             textContent: pc.lines.join("\n"),
             metadata: cellMetadata,
             id: pc.metadata.id || generateUniqueCellId(),
+            response: undefined
         };
     });
     const nbContent = {
@@ -146,7 +147,6 @@ export function parseNotebookContent(notebookContentString) {
             let cellMetadata = {};
             let cellType = infoString;
             let spacePos = infoString.indexOf(" ");
-            console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
             if (spacePos > 1) {
                 cellType = infoString.substring(0, spacePos);
                 cellParameters = infoString.substring(spacePos + 1);
@@ -159,7 +159,7 @@ export function parseNotebookContent(notebookContentString) {
                     else {
                         cellType = cellType + "-" + cellParameters.substring(0, spacePos);
                         cellParameters = cellParameters.substring(spacePos + 1);
-                        console.log("cellType spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
+                        //console.log("cellType spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
                         cellMetadata = { properties: JSON.parse(cellParameters) };
                     }
                 }
@@ -167,7 +167,6 @@ export function parseNotebookContent(notebookContentString) {
                     cellMetadata = { properties: JSON.parse(cellParameters) };
                 }
             }
-            console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
             currentCell = {
                 type: cellType,
                 metadata: cellMetadata,

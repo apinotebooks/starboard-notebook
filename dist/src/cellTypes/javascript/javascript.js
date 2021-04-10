@@ -12,6 +12,7 @@ import { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 export const JAVASCRIPT_CELL_TYPE_DEFINITION = {
     name: "Javascript",
     cellType: ["javascript", "js"],
+    worker: false,
     createHandler: (c, r) => new JavascriptCellHandler(c, r),
 };
 export class JavascriptCellHandler extends BaseCellHandler {

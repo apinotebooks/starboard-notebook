@@ -9,6 +9,7 @@ import { StarboardTextEditor } from "../components/textEditor";
 export const HTML_CELL_TYPE_DEFINITION = {
     name: "HTML",
     cellType: "html",
+    worker: false,
     createHandler: (c, r) => new HTMLCellHandler(c, r),
 };
 export class HTMLCellHandler extends BaseCellHandler {

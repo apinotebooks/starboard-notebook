@@ -4,6 +4,7 @@ import { Runtime, CellHandlerAttachParameters } from "../runtime";
 export declare const LATEX_CELL_TYPE_DEFINITION: {
     name: string;
     cellType: string[];
+    worker: boolean;
     createHandler: (c: Cell, r: Runtime) => LatexCellHandler;
 };
 export declare class LatexCellHandler extends BaseCellHandler {

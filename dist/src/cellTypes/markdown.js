@@ -24,6 +24,7 @@ const DEFAULT_EDIT_MODE = "wysiwyg";
 export const MARKDOWN_CELL_TYPE_DEFINITION = {
     name: "Markdown",
     cellType: ["markdown", "md"],
+    worker: false,
     createHandler: (c, r) => new MarkdownCellHandler(c, r),
 };
 export class MarkdownCellHandler extends BaseCellHandler {

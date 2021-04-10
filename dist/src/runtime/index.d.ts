@@ -56,6 +56,7 @@ export interface RuntimeControls {
      */
     subscribeToCellChanges(id: string, callback: () => void): void;
     unsubscribeToCellChanges(id: string, callback: () => void): void;
+    previousResponse(cellId: string): any;
 }
 /**
  * These are exposed functions and libraries. They are exposed so that they can be easily used within notebooks or

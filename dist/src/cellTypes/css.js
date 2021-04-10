@@ -8,6 +8,7 @@ import { StarboardTextEditor } from "../components/textEditor";
 export const CSS_CELL_TYPE_DEFINITION = {
     name: "CSS",
     cellType: "css",
+    worker: false,
     createHandler: (c, r) => new CSSCellHandler(c, r),
 };
 export class CSSCellHandler extends BaseCellHandler {

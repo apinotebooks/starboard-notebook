@@ -126,7 +126,7 @@ let CellElement = class CellElement extends LitElement {
             return html `
                             <li>
                                 <button title=${ctString} class="dropdown-item${ctString === this.cell.cellType ? " active" : ""}" @click=${() => this.changeCellType(ct.cellType)}>
-                                    ${ct.name}<span style="opacity: 0.6; float: right; font-size: 11px; font-family: var(--font-mono)">${ctString}</span>
+                                    ${ct.name}<!--span style="opacity: 0.6; float: right; font-size: 11px; font-family: var(--font-mono)">${ctString}</span-->
                                 </button>
                             </li>
                         `;
