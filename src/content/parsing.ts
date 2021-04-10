@@ -180,7 +180,7 @@ export function parseNotebookContent(notebookContentString: string) {
       let cellMetadata = {};
       let cellType = infoString;
       let spacePos = infoString.indexOf(" ");
-      console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
+      
       if (spacePos > 1) {
         cellType = infoString.substring(0, spacePos);
         cellParameters = infoString.substring(spacePos + 1);
@@ -192,7 +192,7 @@ export function parseNotebookContent(notebookContentString: string) {
           } else {
             cellType = cellType + "-" + cellParameters.substring(0, spacePos);
             cellParameters = cellParameters.substring(spacePos + 1);
-            console.log("cellType spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
+            //console.log("cellType spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
             cellMetadata = { properties: JSON.parse(cellParameters) };
           }
         } else {
@@ -200,7 +200,7 @@ export function parseNotebookContent(notebookContentString: string) {
         }
 
       }
-      console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
+      
       currentCell = {
         type: cellType,
         metadata: cellMetadata,
