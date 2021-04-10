@@ -21,7 +21,7 @@ interface RunResult {
   value?: any;
 }
 
-export class JavascriptEvaluator {
+export class JsonTemplateEvaluator {
   public async run(cell: Cell): Promise<RunResult> {
 
     const res: RunResult = {
@@ -62,7 +62,7 @@ export class JavascriptEvaluator {
 
       //const cellResult = await window.eval(codeToRun);      
       var context = { runtime: window.runtime };
-      const cellResult = await worker(previousResult, context);
+      const cellResult = JSON.parse(cell.textContent);
 
       res.value = cellResult;
       cell.response = res.value;

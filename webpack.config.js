@@ -125,7 +125,7 @@ const baseConfig = {
         }),
         new MonacoWebpackPlugin({
             languages: [
-                "markdown", "html", "css", "javascript", "typescript", 
+                "markdown", "html", "css", "javascript", "typescript", "json"
             ],
             features: [
                 "!toggleHighContrast", "!gotoSymbol"

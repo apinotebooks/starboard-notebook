@@ -5,7 +5,7 @@
 import { html, render, TemplateResult } from "lit-html";
 import { BaseCellHandler } from "../base";
 import { cellControlsTemplate } from "../../components/controls";
-import { JavascriptEvaluator } from "./eval";
+import { JsonTemplateEvaluator } from "./eval";
 import { PlayCircleIcon, ClockIcon } from "@spectrum-web-components/icons-workflow";
 
 import { ConsoleOutputElement } from "../../components/output/consoleOutput";
@@ -33,7 +33,7 @@ export class JavascriptWorkerCellHandler extends BaseCellHandler {
     private elements!: CellElements;
     private editor!: StarboardTextEditor;
 
-    private jsRunner: JavascriptEvaluator;
+    private jsRunner: JsonTemplateEvaluator;
 
     private isCurrentlyRunning = false;
     private lastRunId = 0;
@@ -42,7 +42,7 @@ export class JavascriptWorkerCellHandler extends BaseCellHandler {
 
     constructor(cell: Cell, runtime: Runtime) {
         super(cell, runtime);
-        this.jsRunner = new JavascriptEvaluator();
+        this.jsRunner = new JsonTemplateEvaluator();
     }
 
     private getControls(): TemplateResult {

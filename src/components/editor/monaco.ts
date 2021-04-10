@@ -118,7 +118,7 @@ function addEditorKeyboardShortcuts(
 }
 
 export function createMonacoEditor(element: HTMLElement, cell: Cell, opts: {language?: MonacoEditorSupportedLanguage; wordWrap?: WordWrapSetting}, runtime: Runtime) {
-    debugger;
+    
     const editor = monaco.editor.create(element, {
         value: cell.textContent,
         language: opts.language,
