@@ -10,7 +10,7 @@ import { StarboardTextEditor } from '../../components/textEditor';
 import { renderIfHtmlOutput } from "../../components/output/htmlOutput";
 export const ES_MODULE_CELL_TYPE_DEFINITION = {
     name: "ES Module",
-    cellType: "esm",
+    cellType: "javascript-esm",
     createHandler: (c, r) => new ESModuleCellHandler(c, r),
 };
 export class ESModuleCellHandler extends BaseCellHandler {
@@ -101,4 +101,4 @@ export class ESModuleCellHandler extends BaseCellHandler {
         this.editor.remove();
     }
 }
-//# sourceMappingURL=esm.js.map
+//# sourceMappingURL=javascript-esm.js.map

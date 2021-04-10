@@ -7,7 +7,7 @@ import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
 import { MapRegistry } from "../runtime/registry";
-import { ES_MODULE_CELL_TYPE_DEFINITION } from "./esm/esm";
+import { ES_MODULE_CELL_TYPE_DEFINITION } from "./javascript-esm/javascript-esm";
 import { LATEX_CELL_TYPE_DEFINITION } from "./latex";
 const PLAINTEXT_CELL_TYPE_DEFINITION = {
     name: "Plaintext",
