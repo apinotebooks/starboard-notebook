@@ -146,6 +146,7 @@ export function parseNotebookContent(notebookContentString) {
             let cellMetadata = {};
             let cellType = infoString;
             let spacePos = infoString.indexOf(" ");
+            console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
             if (spacePos > 1) {
                 cellType = infoString.substring(0, spacePos);
                 cellParameters = infoString.substring(spacePos + 1);

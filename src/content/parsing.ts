@@ -84,9 +84,9 @@ function parseLegacyCellDelimiter(line: string): ParsedCell {
  * Parses the given notebook file content string into the frontmatter and ParsedCell structure.
  */
 export function parseNotebookContent(notebookContentString: string) {
-  
+
   const allLines = notebookContentString.split(eol);
-  if(notebookContentString.endsWith("\n") || notebookContentString.endsWith("\r")) allLines.pop(); // remove added last line
+  if (notebookContentString.endsWith("\n") || notebookContentString.endsWith("\r")) allLines.pop(); // remove added last line
 
   // The index at which the cells start
   let cellLinesStartIndex = 0;
@@ -111,7 +111,7 @@ export function parseNotebookContent(notebookContentString: string) {
   }
 
   // ignore yaml if it's not at the front of the file
-  if(yamlHeaderStartIndex !== undefined && yamlHeaderStartIndex>1) {
+  if (yamlHeaderStartIndex !== undefined && yamlHeaderStartIndex > 1) {
     yamlHeaderStartIndex = undefined;
     yamlHeaderEndIndex = undefined;
   }
@@ -120,7 +120,7 @@ export function parseNotebookContent(notebookContentString: string) {
   if (yamlHeaderStartIndex !== undefined && yamlHeaderEndIndex === undefined) {
     yamlHeaderStartIndex = undefined;
   }
-  
+
   let metadata = {};
   if (yamlHeaderStartIndex !== undefined && yamlHeaderEndIndex !== undefined) {
 
@@ -137,7 +137,7 @@ export function parseNotebookContent(notebookContentString: string) {
       throw e;
     }
 
-  } 
+  }
 
   const cells: ParsedCell[] = [];
 
@@ -175,23 +175,24 @@ export function parseNotebookContent(notebookContentString: string) {
       }
 
       let infoString = line.substring(3).trimLeft();
-      
+
       let cellParameters = "";
       let cellMetadata = {};
       let cellType = infoString;
-      let spacePos = infoString.indexOf(" ");      
-      if (spacePos>1) {        
+      let spacePos = infoString.indexOf(" ");
+      console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
+      if (spacePos > 1) {
         cellType = infoString.substring(0, spacePos);
         cellParameters = infoString.substring(spacePos + 1);
-        if(!cellParameters.startsWith("{")) {
+        if (!cellParameters.startsWith("{")) {
           // join cell subtype
           spacePos = cellParameters.indexOf(" ");
-          cellType = cellType + "-"  + cellParameters.substring(0,spacePos);
+          cellType = cellType + "-" + cellParameters.substring(0, spacePos);
           cellParameters = cellParameters.substring(spacePos + 1);
         }
-        cellMetadata =  { properties: JSON.parse(cellParameters)};        
-      } 
-      console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX"+cellParameters);
+        cellMetadata = { properties: JSON.parse(cellParameters) };
+      }
+      console.log("infoString spacePos " + spacePos + " cellType XX" + cellType + "XX" + cellParameters);
       currentCell = {
         type: cellType,
         metadata: cellMetadata,
