@@ -120,10 +120,11 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         const cellElement = cellElements[i];
         if (cellElement.cell.id === id) {
           idxOfCell = i;
-          cellElement.run();
+          cellElement.run();         
           break; // IDs should be unique, so after we find it we can stop searching.
         }
       }
+
       const isLastCell = idxOfCell === cellElements.length - 1;
 
       if (insertNewCell) { // run should have no side effects || isLastCell) {

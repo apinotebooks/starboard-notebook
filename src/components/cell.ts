@@ -35,7 +35,7 @@ export class CellElement extends LitElement {
 
     private isCurrentlyRunning = false;
 
-    @property({attribute: false})
+    @property({ attribute: false })
     public runtime: Runtime;
 
     constructor(
@@ -91,6 +91,35 @@ export class CellElement extends LitElement {
         await this.cellHandler.run();
         this.isCurrentlyRunning = false;
         this.performUpdate();
+
+        // run next worker
+        if (this.cell.response != undefined) {
+            var cells = this.runtime.content.cells;
+
+            // find index of current cell
+            let idxOfCell = -1;
+            for (let i = 0; i < cells.length; i++) {
+                const cell = cells[i];
+                if (cell.id === this.cell.id) {
+                    idxOfCell = i;
+                    break; // IDs should be unique, so after we find it we can stop searching.
+                }
+            }
+
+            if (idxOfCell < cells.length - 1) {
+
+                // find next worker cell                
+                for (let i = idxOfCell + 1; i < cells.length; i++) {
+                    const cell = cells[i];
+                    var ct = this.runtime.definitions.cellTypes.get(cell.cellType);
+                    if (ct && ct.worker === true) {
+                        this.runtime.controls.emit({id: cell.id, type: "RUN_CELL"}); // run next worker cell to process new response
+                        break; 
+                    }
+                }
+            }
+        }
+
     }
 
     public focusEditor() {
@@ -141,7 +170,7 @@ export class CellElement extends LitElement {
                     <button @mousedown=${() => emit({ id, type: "RUN_CELL" })} class="cell-controls-button display-when-collapsed" title="Run cell">
                         ${PlayCircleIcon({ width: 20, height: 20 })}
                 </button>`
-                }
+            }
             </div>
 
             <!-- Top bar of the cell -->
@@ -154,18 +183,19 @@ export class CellElement extends LitElement {
                 <div class="collapsed-cell-line" title="Click to reveal collapsed cell temporarily"></div>
                 
                 <div class="dropdown">
-                    <button data-bs-toggle="dropdown" title="Change Cell Type" class="cell-controls-button cell-controls-button-language auto-hide" @click=${/*(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)*/()=>0}>${this.cellTypeDefinition.name}</button>
+                    <button data-bs-toggle="dropdown" title="Change Cell Type" class="cell-controls-button cell-controls-button-language auto-hide" @click=${/*(evt: Event) => this.togglePopover(evt.target as HTMLElement, this.typePickerElement)*/() => 0}>${this.cellTypeDefinition.name}</button>
                     <div class="dropdown-menu" style="min-width: 244px">
                         <li><h6 class="dropdown-header">Change Cell Type</h6></li>
                         ${getAvailableCellTypes().map((ct) => {
-                            const ctString = typeof ct.cellType === "string" ? ct.cellType : ct.cellType[0];
-                            return html`
+                const ctString = typeof ct.cellType === "string" ? ct.cellType : ct.cellType[0];
+                return html`
                             <li>
                                 <button title=${ctString} class="dropdown-item${ctString === this.cell.cellType ? " active" : ""}" @click=${() => this.changeCellType(ct.cellType)}>
                                     ${ct.name}<!--span style="opacity: 0.6; float: right; font-size: 11px; font-family: var(--font-mono)">${ctString}</span-->
                                 </button>
                             </li>
-                        `;})}
+                        `;
+            })}
                     </div>
                 </div>
 

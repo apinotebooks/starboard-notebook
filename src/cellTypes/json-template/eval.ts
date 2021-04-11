@@ -70,7 +70,7 @@ export class JsonTemplateEvaluator {
       // "Expand" the template - this generates the final Adaptive Card,
       // ready to render
       var cellResult = template.expand(context);
-debugger;
+
       res.value = cellResult;
       cell.response = res.value;
       (window)["$_"] = res.value;
