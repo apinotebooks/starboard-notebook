@@ -61,6 +61,30 @@ let CellElement = class CellElement extends LitElement {
         await this.cellHandler.run();
         this.isCurrentlyRunning = false;
         this.performUpdate();
+        // run next worker
+        if (this.cell.response != undefined) {
+            var cells = this.runtime.content.cells;
+            // find index of current cell
+            let idxOfCell = -1;
+            for (let i = 0; i < cells.length; i++) {
+                const cell = cells[i];
+                if (cell.id === this.cell.id) {
+                    idxOfCell = i;
+                    break; // IDs should be unique, so after we find it we can stop searching.
+                }
+            }
+            if (idxOfCell < cells.length - 1) {
+                // find next worker cell                
+                for (let i = idxOfCell + 1; i < cells.length; i++) {
+                    const cell = cells[i];
+                    var ct = this.runtime.definitions.cellTypes.get(cell.cellType);
+                    if (ct && ct.worker === true) {
+                        this.runtime.controls.emit({ id: cell.id, type: "RUN_CELL" }); // run next worker cell to process new response
+                        break;
+                    }
+                }
+            }
+        }
     }
     focusEditor() {
         this.focus();
