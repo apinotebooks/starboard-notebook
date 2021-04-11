@@ -6,6 +6,7 @@ import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
 import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
 import { JAVASCRIPT_WORKER_CELL_TYPE_DEFINITION } from "./javascript-worker/javascript-worker";
 import { JSON_TEMPLATE_CELL_TYPE_DEFINITION } from "./json-template/json-template";
+import { ADAPTIVE_CARD_CELL_TYPE_DEFINITION } from "./json-adaptive-card/json-adaptive-card";
 import { HTML_CELL_TYPE_DEFINITION } from "./html";
 import { CSS_CELL_TYPE_DEFINITION } from "./css";
 import { MapRegistry } from "../runtime/registry";
@@ -21,6 +22,7 @@ const builtinCellTypes = [
     MARKDOWN_CELL_TYPE_DEFINITION,
     JAVASCRIPT_CELL_TYPE_DEFINITION,
     JAVASCRIPT_WORKER_CELL_TYPE_DEFINITION,
+    ADAPTIVE_CARD_CELL_TYPE_DEFINITION,
     JSON_TEMPLATE_CELL_TYPE_DEFINITION,
     ES_MODULE_CELL_TYPE_DEFINITION,
     HTML_CELL_TYPE_DEFINITION,
