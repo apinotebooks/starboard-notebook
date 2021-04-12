@@ -56,6 +56,10 @@ export interface Cell {
     * last response from worker components
     */
     response: any;
+    /**
+    * internal state of component (e.g. last inputs), will not be persisted
+    */
+    state: any;
 }
 export interface NotebookMetadata {
     title?: string;
