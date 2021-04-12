@@ -41,7 +41,8 @@ export function addCellToNotebookContent(runtime: Runtime, nb: NotebookContent, 
             textContent: "",
             metadata: {properties: {}, ...(runtime.config.persistCellIds ? {id} : {})},
             id,
-            response: undefined
+            response: undefined,
+            state: undefined
     };
 
     nb.cells.splice(idx, 0, cell);
