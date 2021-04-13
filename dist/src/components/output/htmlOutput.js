@@ -1,6 +1,6 @@
 import { html, render } from "lit-html";
 import { isProbablyTemplateResult } from "../../cellTypes/javascript/util";
-export function renderIfHtmlOutput(val, intoElement) {
+export function renderIfHtmlOutput(val, intoElement, outputClass = "cell-output-html") {
     let didRender = false;
     if (val instanceof HTMLElement) {
         intoElement.appendChild(val);
@@ -10,8 +10,8 @@ export function renderIfHtmlOutput(val, intoElement) {
         render(html `${val}`, intoElement);
         didRender = true;
     }
-    if (didRender) {
-        intoElement.classList.add("cell-output-html");
+    if (didRender && outputClass) {
+        intoElement.classList.add(outputClass);
     }
     return didRender;
 }

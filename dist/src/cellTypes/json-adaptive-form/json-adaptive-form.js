@@ -90,7 +90,6 @@ export class AdaptiveFormCellHandler extends BaseCellHandler {
         // Set the adaptive card's event handlers. onExecuteAction is invoked
         // whenever an action is clicked in the card
         adaptiveCard.onExecuteAction = function (action) {
-            debugger;
             // @ts-ignore
             var cell = this.cell;
             // copy form data to new state   

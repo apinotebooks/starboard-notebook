@@ -45,7 +45,10 @@ export function removeCellFromNotebookById(nb, id) {
 }
 export function changeCellType(nb, id, newCellType) {
     const idx = requireIndexOfCellId(nb.cells, id);
-    nb.cells[idx].textContent = ""; // clear content as content is completely different for the different cell types
+    // clear content when cell base type changes
+    if (nb.cells[idx].cellType.split("-")[0] != newCellType.split("-")[0]) {
+        nb.cells[idx].textContent = "";
+    }
     const cellAsString = cellToText(nb.cells[idx]);
     const newCell = textToNotebookContent(cellAsString).cells[0];
     newCell.cellType = newCellType;

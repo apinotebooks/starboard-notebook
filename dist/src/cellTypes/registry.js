@@ -5,6 +5,7 @@ import { DefaultCellHandler, DEFAULT_CELL_TYPE_DEFINITION } from "./default";
 import { MARKDOWN_CELL_TYPE_DEFINITION } from "./markdown";
 import { JAVASCRIPT_CELL_TYPE_DEFINITION } from "./javascript/javascript";
 import { JAVASCRIPT_WORKER_CELL_TYPE_DEFINITION } from "./javascript-worker/javascript-worker";
+import { JAVASCRIPT_CONNECTOR_CELL_TYPE_DEFINITION } from "./javascript-connector/javascript-connector";
 import { JSON_TEMPLATE_CELL_TYPE_DEFINITION } from "./json-template/json-template";
 import { ADAPTIVE_CARD_CELL_TYPE_DEFINITION } from "./json-adaptive-card/json-adaptive-card";
 import { ADAPTIVE_FORM_CELL_TYPE_DEFINITION } from "./json-adaptive-form/json-adaptive-form";
@@ -23,6 +24,7 @@ const builtinCellTypes = [
     MARKDOWN_CELL_TYPE_DEFINITION,
     JAVASCRIPT_CELL_TYPE_DEFINITION,
     JAVASCRIPT_WORKER_CELL_TYPE_DEFINITION,
+    JAVASCRIPT_CONNECTOR_CELL_TYPE_DEFINITION,
     ADAPTIVE_CARD_CELL_TYPE_DEFINITION,
     ADAPTIVE_FORM_CELL_TYPE_DEFINITION,
     JSON_TEMPLATE_CELL_TYPE_DEFINITION,
