@@ -10,7 +10,7 @@ import { Runtime } from '../runtime';
 
 function requireIndexOfCellId(cells: Cell[], id?: string) {
     if (id === undefined) {
-        return cells.length-1;
+        return cells.length - 1;
     }
     const idx = cells.findIndex((c) => (id === c.id));
     if (idx === -1) {
@@ -25,7 +25,7 @@ export function addCellToNotebookContent(runtime: Runtime, nb: NotebookContent, 
 
     if (position === "end") {
         idx = nb.cells.length;
-        cellType = nb.cells.length === 0 ? "markdown": nb.cells[nb.cells.length-1].cellType;
+        cellType = nb.cells.length === 0 ? "markdown" : nb.cells[nb.cells.length - 1].cellType;
     } else {
         idx = requireIndexOfCellId(nb.cells, adjacentCellId);
         cellType = idx === 0 && adjacentCellId === undefined ? "markdown" : nb.cells[idx].cellType;
@@ -34,15 +34,15 @@ export function addCellToNotebookContent(runtime: Runtime, nb: NotebookContent, 
     if (position === "after") {
         idx += 1;
     }
-    
-    id = id || generateUniqueCellId();    
+
+    id = id || generateUniqueCellId();
     const cell: Cell = {
-            cellType,
-            textContent: "",
-            metadata: {properties: {}, ...(runtime.config.persistCellIds ? {id} : {})},
-            id,
-            response: undefined,
-            state: undefined
+        cellType,
+        textContent: "",
+        metadata: { properties: {}, ...(runtime.config.persistCellIds ? { id } : {}) },
+        id,
+        response: undefined,
+        state: undefined
     };
 
     nb.cells.splice(idx, 0, cell);
@@ -55,7 +55,12 @@ export function removeCellFromNotebookById(nb: NotebookContent, id: string) {
 
 export function changeCellType(nb: NotebookContent, id: string, newCellType: string) {
     const idx = requireIndexOfCellId(nb.cells, id);
-    nb.cells[idx].textContent=""; // clear content as content is completely different for the different cell types
+
+    // clear content when cell base type changes
+    if (nb.cells[idx].cellType.split("-")[0] != newCellType.split("-")[0]) {
+        nb.cells[idx].textContent = "";
+    }
+    
     const cellAsString = cellToText(nb.cells[idx]);
     const newCell = textToNotebookContent(cellAsString).cells[0];
     newCell.cellType = newCellType;

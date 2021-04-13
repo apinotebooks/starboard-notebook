@@ -118,8 +118,7 @@ export class AdaptiveFormCellHandler extends BaseCellHandler {
         // Set the adaptive card's event handlers. onExecuteAction is invoked
         // whenever an action is clicked in the card
         adaptiveCard.onExecuteAction = function(action: any) { 
-            
-            debugger;
+
             // @ts-ignore
             var cell = this.cell;
 
@@ -130,7 +129,7 @@ export class AdaptiveFormCellHandler extends BaseCellHandler {
             if (Object.keys(state).length == 0) state = undefined;
             cell.state = state;
             
-             // @ts-ignore
+            // @ts-ignore
             this.runtime.controls.emit({id: cell.id, type: "RUN_CELL"});
             
         }.bind(this);

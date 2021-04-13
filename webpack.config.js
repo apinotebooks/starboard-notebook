@@ -108,7 +108,7 @@ const baseConfig = {
     <style>
         starboard-notebook {
             display: block;
-            min-height: 280px;
+            padding-bottom: 280px;
         }
     </style>
 </head>

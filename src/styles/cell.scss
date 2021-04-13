@@ -72,3 +72,7 @@ starboard-cell:not(:focus):not(:focus-within) {
     overflow-x: auto;
     padding: 0.4em;
 }
+
+.cell-output-iframe {    
+    padding: 0;
+}
