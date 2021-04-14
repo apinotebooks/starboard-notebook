@@ -22,7 +22,7 @@ export const ADAPTIVE_FORM_CELL_TYPE_DEFINITION = {
     worker: true,
     createHandler: function (c: Cell, r: Runtime) {
         if (!c.textContent) c.textContent =
-`
+            `
 {
     "type": "AdaptiveCard",
     "$schema": "http://adaptivecards.io/schemas/adaptive-card.json",
@@ -30,7 +30,7 @@ export const ADAPTIVE_FORM_CELL_TYPE_DEFINITION = {
     "body": [
         {
             "type": "Input.Text",
-            "placeholder": "Placeholder text",
+            "label": "Name",
             "id": "name"
         }
     ],
@@ -84,7 +84,7 @@ export class AdaptiveFormCellHandler extends BaseCellHandler {
     }
 
     async run() {
-       
+
         this.lastRunId++;
         const currentRunId = this.lastRunId;
         this.isCurrentlyRunning = true;
@@ -107,36 +107,43 @@ export class AdaptiveFormCellHandler extends BaseCellHandler {
 
         // Create an AdaptiveCard instance
         var adaptiveCard = new AdaptiveCards.AdaptiveCard();
-        
+
         // Set its hostConfig property unless you want to use the default Host Config
         // Host Config defines the style and behavior of a card
         adaptiveCard.hostConfig = new AdaptiveCards.HostConfig({
             fontFamily: "Segoe UI, Helvetica Neue, sans-serif"
             // More host config options
         });
-        
+
         // Set the adaptive card's event handlers. onExecuteAction is invoked
         // whenever an action is clicked in the card
-        adaptiveCard.onExecuteAction = function(action: any) { 
+        adaptiveCard.onExecuteAction = function (action: any) {
 
             // @ts-ignore
             var cell = this.cell;
 
             // copy form data to new state   
             var state = cell.state;
-            if(state == undefined) state = {};
+
+            if (state == undefined) state = {};
+            var previousResult = window.runtime.controls.previousResponse(cell.id);
+            if (previousResult) {
+                Object.assign(state,previousResult);
+            }            
+           
             Object.assign(state, action.data);
             if (Object.keys(state).length == 0) state = undefined;
+            if (Object.keys(action.data).length == 0) state = undefined;
             cell.state = state;
-            
+
             // @ts-ignore
-            this.runtime.controls.emit({id: cell.id, type: "RUN_CELL"});
-            
+            this.runtime.controls.emit({ id: cell.id, type: "RUN_CELL" });
+
         }.bind(this);
-        
+
         // Parse the card payload
         adaptiveCard.parse(val);
-        
+
         // Render the card to an HTML element:
         var renderedCard = adaptiveCard.render();
 
