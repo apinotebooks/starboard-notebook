@@ -56,7 +56,6 @@ export class AdaptiveCardTemplateEvaluator {
 
       // copy form data to new state   
       var state = cell.state;
-debugger;
       if (state == undefined) state = {};
       var previousResult = window.runtime.controls.previousResponse(cell.id);
       if (previousResult) {
@@ -72,15 +71,17 @@ debugger;
       // "Expand" the template - this generates the final Adaptive Card,
       // ready to render
       var card = template.expand(context);
-
+console.log("formcard");
       var newState = this.extractValues(card, state);
       if (newState != undefined) {
         Object.assign(state, newState);
+      } else {
+        state = undefined;
       }
 
-      if (Object.keys(state).length == 0) state = undefined;
+      if (state && Object.keys(state).length == 0) state = undefined;
       cell.state = state;
-      
+
       res.value = card;
       cell.response = state;
       (window)["$_"] = state;

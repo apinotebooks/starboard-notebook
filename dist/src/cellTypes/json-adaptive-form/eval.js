@@ -26,7 +26,6 @@ export class AdaptiveCardTemplateEvaluator {
             var template = new ACData.Template(templatePayload);
             // copy form data to new state   
             var state = cell.state;
-            debugger;
             if (state == undefined)
                 state = {};
             var previousResult = window.runtime.controls.previousResponse(cell.id);
@@ -41,11 +40,15 @@ export class AdaptiveCardTemplateEvaluator {
             // "Expand" the template - this generates the final Adaptive Card,
             // ready to render
             var card = template.expand(context);
+            console.log("formcard");
             var newState = this.extractValues(card, state);
             if (newState != undefined) {
                 Object.assign(state, newState);
             }
-            if (Object.keys(state).length == 0)
+            else {
+                state = undefined;
+            }
+            if (state && Object.keys(state).length == 0)
                 state = undefined;
             cell.state = state;
             res.value = card;

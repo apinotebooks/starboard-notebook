@@ -96,7 +96,7 @@ export class AdaptiveFormCellHandler extends BaseCellHandler {
         const htmlOutput = document.createElement("div");
         htmlOutput.classList.add("cell-output-html");
         render(html`${this.outputElement}${htmlOutput}`, this.elements.bottomElement);
-debugger;
+
         const outVal = await this.jsRunner.run(this.cell);
 
         // Not entirely sure this is necessary anymore, but we had to wait one tick with unhooking
