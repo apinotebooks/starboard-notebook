@@ -25,7 +25,7 @@ export const ADAPTIVE_FORM_CELL_TYPE_DEFINITION = {
     "body": [
         {
             "type": "Input.Text",
-            "placeholder": "Placeholder text",
+            "label": "Name",
             "id": "name"
         }
     ],
@@ -96,8 +96,14 @@ export class AdaptiveFormCellHandler extends BaseCellHandler {
             var state = cell.state;
             if (state == undefined)
                 state = {};
+            var previousResult = window.runtime.controls.previousResponse(cell.id);
+            if (previousResult) {
+                Object.assign(state, previousResult);
+            }
             Object.assign(state, action.data);
             if (Object.keys(state).length == 0)
+                state = undefined;
+            if (Object.keys(action.data).length == 0)
                 state = undefined;
             cell.state = state;
             // @ts-ignore

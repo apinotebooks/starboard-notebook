@@ -38,11 +38,16 @@ export class AdaptiveCardTemplateEvaluator {
             // ready to render
             var card = template.expand(context);
             var newState = this.extractValues(card, state);
-            if (newState != undefined)
-                cell.state = newState;
+            if (newState != undefined) {
+                var currentState = cell.state;
+                if (currentState == undefined)
+                    currentState = {};
+                Object.assign(currentState, newState);
+                cell.state = currentState;
+            }
             res.value = card;
-            cell.response = newState;
-            (window)["$_"] = res.value;
+            cell.response = currentState;
+            (window)["$_"] = currentState;
             return res;
         }
         catch (error) {
