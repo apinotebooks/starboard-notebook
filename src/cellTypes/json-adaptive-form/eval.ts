@@ -75,15 +75,15 @@ debugger;
 
       var newState = this.extractValues(card, state);
       if (newState != undefined) {
-        var currentState = cell.state;
-        if (currentState == undefined) currentState = {};
-        Object.assign(currentState, newState);
-        cell.state = currentState;
+        Object.assign(state, newState);
       }
 
+      if (Object.keys(state).length == 0) state = undefined;
+      cell.state = state;
+      
       res.value = card;
-      cell.response = currentState;
-      (window)["$_"] = currentState;
+      cell.response = state;
+      (window)["$_"] = state;
       return res;
 
     } catch (error) {
