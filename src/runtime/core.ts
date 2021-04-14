@@ -67,8 +67,7 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
 
             // copy public metadata (so frontmatter variable names not starting with _) to variables
             // token is a special case: it is not persistet, and should be used as an private environment variable in the script
-            Object.keys(runtime.content.metadata).forEach(key => {     
-                console.log("key " + key);
+            Object.keys(runtime.content.metadata).forEach(key => {                     
                 if(!key.startsWith("_") && key != "_token") runtime.variables[key] = runtime.content.metadata[key]; 
               });
 
