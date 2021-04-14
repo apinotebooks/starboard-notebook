@@ -40,7 +40,6 @@ export class AdaptiveCardTemplateEvaluator {
             // "Expand" the template - this generates the final Adaptive Card,
             // ready to render
             var card = template.expand(context);
-            console.log("formcard");
             var newState = this.extractValues(card, state);
             if (newState != undefined) {
                 Object.assign(state, newState);
