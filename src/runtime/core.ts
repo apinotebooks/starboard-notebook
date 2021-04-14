@@ -66,8 +66,9 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
             runtime.content = textToNotebookContent(msg.payload.content);
 
             // copy public metadata (so frontmatter variable names not starting with _) to variables
+            // token is a special case: it is not persistet, and should be used as an private environment variable in the script
             Object.keys(runtime.content.metadata).forEach(key => {                
-                if(!key.startsWith("_")) runtime.variables[key] = runtime.content.metadata[key]; 
+                if(!key.startsWith("_") && key != "_token") runtime.variables[key] = runtime.content.metadata[key]; 
               });
 
             // copy variables provided by container
