@@ -54,12 +54,14 @@ export class AdaptiveCardTemplateEvaluator {
       // Create a Template instance from the template payload
       var template = new ACData.Template(templatePayload);
 
+      // copy form data to new state   
+      var state = cell.state;
+debugger;
+      if (state == undefined) state = {};
       var previousResult = window.runtime.controls.previousResponse(cell.id);
-      if (!previousResult) {
-        previousResult = {};
+      if (previousResult) {
+        Object.assign(state, previousResult);
       }
-
-      var state = cell.state || previousResult;
 
       // Create a data binding context, and set its $root property to the
       // data object to bind the template to
@@ -72,9 +74,9 @@ export class AdaptiveCardTemplateEvaluator {
       var card = template.expand(context);
 
       var newState = this.extractValues(card, state);
-      if(newState != undefined) {
+      if (newState != undefined) {
         var currentState = cell.state;
-        if(currentState == undefined) currentState = {};
+        if (currentState == undefined) currentState = {};
         Object.assign(currentState, newState);
         cell.state = currentState;
       }
