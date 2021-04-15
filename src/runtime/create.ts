@@ -37,7 +37,7 @@ function getInitialContent() {
 function getConfig() {
   let config: RuntimeConfig = {
     persistCellIds: false,
-    defaultTextEditor: "smart",
+    defaultTextEditor: "codemirror",
   };
 
   if (window.runtimeConfig) {
