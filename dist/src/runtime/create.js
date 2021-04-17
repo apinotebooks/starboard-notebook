@@ -233,6 +233,13 @@ export function setupRuntime(notebook) {
     /** Initialize certain functionality */
     updateCellsWhenCellDefinitionChanges(rt);
     window.runtime = rt;
+    // fetchJSON - fetch wrapper with global error handling
+    window.fetchJSON = async function (url, options) {
+        var response = await fetch(url, options);
+        // todo: add error handling
+        var json = await response.json();
+        return json;
+    };
     setupCommunicationWithParentFrame(rt);
     registerDefaultPlugins(rt);
     return rt;
