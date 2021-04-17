@@ -120,7 +120,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         const cellElement = cellElements[i];
         if (cellElement.cell.id === id) {
           idxOfCell = i;
-          cellElement.run();         
+          cellElement.run();
           break; // IDs should be unique, so after we find it we can stop searching.
         }
       }
@@ -225,10 +225,10 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       const cellElements = rt.content.cells;
 
       // find index of current cell
-      let idxOfCell = -1;      
+      let idxOfCell = -1;
       for (let i = cellElements.length - 1; i >= 0; i--) {
         const cell = cellElements[i];
-        if (cell.id === cellId) {          
+        if (cell.id === cellId) {
           idxOfCell = i;
           break; // IDs should be unique, so after we find it we can stop searching.
         }
@@ -241,23 +241,23 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
       // find previous worker cell
       let idxOfPrevCell = -1;
-      for (let i =  idxOfCell - 1; i >= 0; i--) {
+      for (let i = idxOfCell - 1; i >= 0; i--) {
         const cell = cellElements[i];
         var ct = rt.definitions.cellTypes.get(cell.cellType);
-        if(ct && ct.worker === true) {          
+        if (ct && ct.worker === true) {
           idxOfPrevCell = i;
           break; // found previous work cell
         }
       }
 
-      if(idxOfPrevCell==-1) {
+      if (idxOfPrevCell == -1) {
         // no previous worker cell, use container variables as request
         return rt.variables;
       } else {
         // return response of previous worker cell
         var cell = cellElements[idxOfPrevCell];
         return cell.response;
-      }      
+      }
 
       return undefined;
     }
@@ -272,6 +272,19 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
   updateCellsWhenCellDefinitionChanges(rt);
 
   (window as any).runtime = rt;
+
+  // fetchJSON - fetch wrapper with global error handling
+  (window as any).fetchJSON = async function (url: string, options: any) {
+
+    var response = await fetch(url, options);
+
+    // todo: add error handling
+
+    var json = await response.json();
+
+    return json;
+
+  }
 
   setupCommunicationWithParentFrame(rt);
   registerDefaultPlugins(rt);
