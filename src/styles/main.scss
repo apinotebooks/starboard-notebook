@@ -164,6 +164,11 @@ view mode
     display: none;
 }
 
+/* markdown shows in cell-top */
+.view-mode .celltype-markdown .cell-top {
+    display: block;
+}
+
 /*
 Custom Bootstrap styles
 */
