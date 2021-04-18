@@ -157,7 +157,10 @@ view mode
     display:none;
 }
 
-.view-mode .cell-controls {
+.view-mode .cell-top,
+.view-mode .cell-controls, 
+.view-mode .cell-gutter,
+.view-mode starboard-console-output {
     display: none;
 }
 
