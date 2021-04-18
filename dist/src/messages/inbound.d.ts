@@ -3,6 +3,7 @@ export interface NotebookInitPayload {
     content: NotebookMessageContentData;
     baseUrl?: string;
     variables?: any;
+    editMode?: string;
 }
 export declare type InboundNotebookMessage = SetContentMessage | ReloadMessage;
 /**

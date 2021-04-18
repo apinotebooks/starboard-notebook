@@ -23,7 +23,7 @@ function getInitialContent() {
 function getConfig() {
     let config = {
         persistCellIds: false,
-        defaultTextEditor: "codemirror",
+        defaultTextEditor: "codemirror"
     };
     if (window.runtimeConfig) {
         config = {
@@ -58,7 +58,8 @@ export function setupRuntime(notebook) {
                 cellContentChanges: new Map()
             }
         },
-        variables: {}
+        variables: {},
+        editMode: "edit"
     };
     const controls = {
         insertCell(position, adjacentCellId) {

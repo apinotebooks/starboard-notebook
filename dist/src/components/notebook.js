@@ -86,9 +86,9 @@ let StarboardNotebookElement = class StarboardNotebookElement extends LitElement
     }
     render() {
         return html `
-      <main class="cells-container"></main>
+      <main class="cells-container ${this.runtime.editMode}-mode"></main>
       
-      <footer class="starboard-notebook-footer">
+      <footer class="starboard-notebook-footer ${this.runtime.editMode}-mode">
         <div></div>
         <div></div>
         <div>         

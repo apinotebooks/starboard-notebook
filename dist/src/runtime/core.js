@@ -64,6 +64,9 @@ export function setupCommunicationWithParentFrame(runtime) {
                         runtime.variables[key] = msg.payload.variables[key];
                     });
                 }
+                runtime.editMode = "edit";
+                if (msg.payload.editMode)
+                    runtime.editMode = msg.payload.editMode;
                 contentHasBeenSetFromParentIframe = true;
                 nb.hasHadInitialRun = false;
                 nb.notebookInitialize();
