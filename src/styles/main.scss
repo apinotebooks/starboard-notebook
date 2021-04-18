@@ -150,6 +150,17 @@ starboard-console-output {
     line-height: 1.2;
 }
 
+/* 
+view mode
+*/
+.starboard-notebook-footer.view-mode {
+    display:none;
+}
+
+.view-mode .cell-controls {
+    display: none;
+}
+
 /*
 Custom Bootstrap styles
 */

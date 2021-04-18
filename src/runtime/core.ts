@@ -60,7 +60,9 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
           };
           askForContent();
         },
+
         onMessage: (msg: InboundNotebookMessage) => {
+          
           if (msg.type === "NOTEBOOK_SET_INIT_DATA") {
             if (contentHasBeenSetFromParentIframe) return; // be idempotent
             runtime.content = textToNotebookContent(msg.payload.content);
@@ -78,6 +80,8 @@ export function setupCommunicationWithParentFrame(runtime: Runtime) {
               });
             }
 
+            runtime.editMode = "edit";
+            if(msg.payload.editMode) runtime.editMode =  msg.payload.editMode;
             contentHasBeenSetFromParentIframe = true;
             nb.hasHadInitialRun = false;
             nb.notebookInitialize();

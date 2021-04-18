@@ -192,6 +192,8 @@ export interface Runtime {
 
     variables: any;
 
+    editMode: string;
+
     /**
      * Internal state, don't depend on this externally
      */
