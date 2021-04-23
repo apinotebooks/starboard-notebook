@@ -107,8 +107,7 @@ const baseConfig = {
     <link rel="icon" href="favicon.ico">    
     <style>
         starboard-notebook {
-            display: block;
-            padding-bottom: 280px;
+            display: block;           
         }
     </style>
 </head>

@@ -111,6 +111,7 @@ i {
     display: grid;
     grid-template-columns: auto 26px minmax(auto, calc(min(980px, 100% - 36px))) 6px auto;
     margin-top: 8px;
+    padding-bottom: 280px;
 }
 
 .starboard-notebook-footer span, .starboard-notebook-footer a {
@@ -154,12 +155,13 @@ starboard-console-output {
 view mode
 */
 .starboard-notebook-footer.view-mode {
-    display:none;
+    padding-bottom: 0px;
 }
 
 .view-mode .cell-top,
 .view-mode .cell-controls, 
 .view-mode .cell-gutter,
+.view-mode .cell-controls-button,
 .view-mode starboard-console-output {
     display: none;
 }
