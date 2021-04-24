@@ -1,6 +1,8 @@
+import { Cell } from "../../types";
 declare global {
     interface Window {
         $_: any;
+        request: any;
         eval: (command: string) => any;
     }
 }
@@ -10,7 +12,7 @@ interface RunResult {
     value?: any;
 }
 export declare class JavascriptEvaluator {
-    run(code: string): Promise<RunResult>;
+    run(cell: Cell): Promise<RunResult>;
     precompile(code: string): Promise<string>;
 }
 export {};

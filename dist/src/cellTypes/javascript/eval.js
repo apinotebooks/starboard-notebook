@@ -5,7 +5,8 @@
 import { precompileJavascriptCode } from './precompile';
 import { promiseState } from './util';
 export class JavascriptEvaluator {
-    async run(code) {
+    async run(cell) {
+        var code = cell.textContent;
         const res = {
             error: false,
             code,
@@ -22,6 +23,8 @@ export class JavascriptEvaluator {
                 res.value = "Run error: container or window is null";
                 return res;
             }
+            var previousResult = window.runtime.controls.previousResponse(cell.id);
+            (window)["request"] = previousResult; // provide previos result as global request
             const cellResult = await window.eval(codeToRun);
             if (cellResult === undefined) {
                 res.value = undefined;

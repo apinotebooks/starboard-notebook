@@ -37,7 +37,7 @@ export async function precompileJavascriptCode(content) {
         VariableDeclaration(node) {
             if (node.kind !== 'var' || !isTopLevel(node))
                 return;
-            return; // disable the var->global magic
+            // var->global magic
             const onlyOneDeclaration = node.declarations.length === 1;
             changes.push({
                 text: onlyOneDeclaration ? 'void' : 'void (',

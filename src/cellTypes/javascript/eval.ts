@@ -5,10 +5,12 @@
 /* Adapted from jsconsole, MIT licensed */
 import { precompileJavascriptCode } from './precompile';
 import { promiseState } from './util';
+import { Cell } from "../../types";
  
 declare global {
   interface Window {
     $_: any;
+    request: any;
     eval: (command: string) => any;
   }
 }
@@ -20,7 +22,11 @@ interface RunResult {
 }
 
 export class JavascriptEvaluator {
-  public async run(code: string): Promise<RunResult> {
+
+  public async run(cell: Cell): Promise<RunResult> {
+
+    var code = cell.textContent;
+
     const res: RunResult = {
       error: false,
       code,
@@ -41,6 +47,9 @@ export class JavascriptEvaluator {
         return res;
       }
       
+      var previousResult = window.runtime.controls.previousResponse(cell.id);
+      (window)["request"] = previousResult; // provide previos result as global request
+
       const cellResult = await window.eval(codeToRun);
       if (cellResult === undefined) {
         res.value = undefined;
