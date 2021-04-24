@@ -63,8 +63,7 @@ starboard-cell:not(:focus):not(:focus-within) {
 }
 
 .cell-bottom {
-    grid-area: bottom;
-    max-height: 80vh;
+    grid-area: bottom;    
     overflow-y: auto;
 }
 
