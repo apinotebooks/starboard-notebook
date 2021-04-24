@@ -97,6 +97,8 @@ let StarboardNotebookElement = class StarboardNotebookElement extends LitElement
         </button>
         </div>
       </footer>
+
+      <div class="iframe-sizer" data-iframe-height></div>
         `;
     }
 };
