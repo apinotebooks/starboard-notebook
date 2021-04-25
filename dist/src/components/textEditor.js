@@ -70,13 +70,14 @@ let StarboardTextEditor = class StarboardTextEditor extends LitElement {
     firstUpdated(changedProperties) {
         super.firstUpdated(changedProperties);
         [].slice.call(document.querySelectorAll('.dropdown-toggle')).map(e => new Dropdown(e));
-        if (currentEditor === "codemirror" || currentEditor === "monaco" || this.runtime.config.defaultTextEditor === "smart") {
+        if (currentEditor == undefined || currentEditor === "codemirror" || currentEditor === "monaco" || this.runtime.config.defaultTextEditor === "smart") {
             this.initEditor();
             // While it loads, render markdown
             const mdText = md.render("```" + `${this.opts.language}\n${this.cell.textContent}\n` + "```");
             render(html `<div class="cell-popover cell-select-editor-popover">Loading CodeMirror editor..</div>${unsafeHTML(mdText)}`, this.editorMountpoint);
         }
         else {
+            // prompt not used any longer
             this.editorMountpoint.addEventListener("dblclick", () => this.handleDblClick(), { once: true, passive: true });
             const mdText = md.render("```" + `${this.opts.language}\n${this.cell.textContent}\n` + "```");
             render(html `
@@ -103,6 +104,7 @@ let StarboardTextEditor = class StarboardTextEditor extends LitElement {
         }
         else {
             let newEditor;
+            console.log("defaultTextEditor1 " + this.runtime.config.defaultTextEditor);
             if (this.runtime.config.defaultTextEditor === "smart") {
                 newEditor = isATouchScreenDevice() ? "codemirror" : "monaco";
             }

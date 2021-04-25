@@ -33,6 +33,8 @@ export class HTMLCellHandler extends BaseCellHandler {
         this.elements.topElement.appendChild(this.editor);
     }
     async run() {
+        var previousResult = window.runtime.controls.previousResponse(this.cell.id);
+        (window)["request"] = previousResult; // provide previos result as global request
         const htmlContent = this.cell.textContent;
         var frag = document.createRange().createContextualFragment(`${htmlContent}`);
         render(html `${frag}`, this.elements.bottomElement);
