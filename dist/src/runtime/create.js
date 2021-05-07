@@ -235,11 +235,17 @@ export function setupRuntime(notebook) {
     updateCellsWhenCellDefinitionChanges(rt);
     window.runtime = rt;
     // fetchJSON - fetch wrapper with global error handling
+    // @ts-ignore
     window.fetchJSON = async function (url, options) {
         var response = await fetch(url, options);
         // todo: add error handling
         var json = await response.json();
         return json;
+    }(window).sandboxImport = async function (moduleName) {
+        if (moduleName != "crypto-esm" && moduleName != "moment")
+            throw "unsupported sandbox module " + moduleName;
+        var src = "https://esm.run/" + moduleName;
+        return await import(/* webpackIgnore: true */ src);
     };
     setupCommunicationWithParentFrame(rt);
     registerDefaultPlugins(rt);

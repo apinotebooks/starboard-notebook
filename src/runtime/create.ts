@@ -274,7 +274,9 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
   (window as any).runtime = rt;
 
+
   // fetchJSON - fetch wrapper with global error handling
+  // @ts-ignore
   (window as any).fetchJSON = async function (url: string, options: any) {
 
     var response = await fetch(url, options);
@@ -286,6 +288,18 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     return json;
 
   }
+
+
+  // import supported dependency
+  // @ts-ignore
+  (window as any).sandboxImport = async function (moduleName: string) {
+
+    if (moduleName != "crypto-esm" && moduleName != "moment") throw "unsupported sandbox module " + moduleName;
+    var src = "https://esm.run/" + moduleName;
+    
+    return await import(/* webpackIgnore: true */src);
+  }
+
 
   setupCommunicationWithParentFrame(rt);
   registerDefaultPlugins(rt);
