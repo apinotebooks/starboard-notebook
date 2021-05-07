@@ -112,15 +112,11 @@ const baseConfig = {
     </style>
     
     <script>
-        window.sandboxImport = async function (moduleName) {
-
-        if (moduleName != "crypto-esm" && moduleName != "moment") throw "unsupported sandbox module " + moduleName;        
-    
+    window.sandboxImport = async function (moduleName) {
+        if (moduleName != "crypto-esm" && moduleName != "moment") throw "unsupported sandbox module " + moduleName;            
         return await import("https://esm.run/" + moduleName);
     }
     </script>
-  }
-
 </head>
 <body>    
 </body>
