@@ -75,9 +75,12 @@ export class JavascriptConnectorCellHandler extends BaseCellHandler {
         // as some console messages are delayed by one tick it seems.
         await this.outputElement.unhookAfterOneTick(this.runtime.consoleCatcher);
         const val = outVal.value;
-        var crushed = this.JSONCrush(JSON.stringify(val));
-        // reuse postman visualizer for now
-        var iframe = html `<iframe src="https://components.adenin.com/components/at-card-preview/loader.html?data=${crushed}" style="width:100%;height:750px;">`;
+        var iframe = undefined;
+        if (!outVal.error) {
+            var crushed = this.JSONCrush(JSON.stringify(val));
+            // reuse postman visualizer for now
+            iframe = html `<iframe src="https://components.adenin.com/components/at-card-preview/loader.html?data=${crushed}" style="width:100%;height:750px;">`;
+        }
         const htmlOutputRendered = renderIfHtmlOutput(iframe, htmlOutput, "cell-output-iframe");
         if (!htmlOutputRendered && val !== undefined) { // Don't show undefined output
             if (outVal.error) {
