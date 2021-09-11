@@ -32,7 +32,7 @@ export class JavascriptEvaluator {
       
       return await handleRequest(request, context);`);
             //const cellResult = await window.eval(codeToRun);      
-            var context = { runtime: window.runtime };
+            var context = { runtime: window.runtime, token: window.runtime.variables._token }; // *todo* add context provider
             const cellResult = await worker(previousResult, context);
             res.value = cellResult;
             cell.response = res.value;
