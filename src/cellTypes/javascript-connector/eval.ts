@@ -60,8 +60,17 @@ export class JavascriptEvaluator {
       
       return await handleRequest(request, context);`);
 
-      //const cellResult = await window.eval(codeToRun);      
-      var context = { runtime: window.runtime, token: window.runtime.variables._token }; // *todo* add context provider
+
+      // *todo* add context provider
+      var context = window.runtime.variables;
+      if (context._token && !context.token) {
+        context.token = context._token;
+        delete context.token;
+      }
+      context.runtime = window.runtime;
+      if (!context.UserLocale) context.UserLocale = navigator.language;
+      if (!context.UserTimezone) context.UserTimezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
       const cellResult = await worker(previousResult, context);
 
       res.value = cellResult;
