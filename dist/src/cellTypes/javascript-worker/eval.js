@@ -37,6 +37,10 @@ export class JavascriptEvaluator {
                 context.token = context._token;
                 delete context._token;
             }
+            if (context._config) {
+                window.notebookConfig = context._config;
+                delete context._config;
+            }
             if (!context.UserLocale)
                 context.UserLocale = navigator.language;
             if (!context.UserTimezone)

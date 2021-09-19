@@ -278,6 +278,10 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
   // fetchJSON - fetch wrapper with global error handling
   (window as any).fetchJSON = async function (url: string, options: any) {
 
+    if((window as any).notebookConfig && (window as any).notebookConfig.APIProxy) {
+      url = (window as any).notebookConfig.APIProxy + url.replace("://","/");
+    }
+
     var response = await fetch(url, options);
 
     // todo: add error handling

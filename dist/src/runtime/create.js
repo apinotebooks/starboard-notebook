@@ -236,6 +236,9 @@ export function setupRuntime(notebook) {
     window.runtime = rt;
     // fetchJSON - fetch wrapper with global error handling
     window.fetchJSON = async function (url, options) {
+        if (window.notebookConfig && window.notebookConfig.APIProxy) {
+            url = window.notebookConfig.APIProxy + url.replace("://", "/");
+        }
         var response = await fetch(url, options);
         // todo: add error handling
         var json = await response.json();
