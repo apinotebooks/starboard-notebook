@@ -239,6 +239,10 @@ export function setupRuntime(notebook) {
         if (window.notebookConfig && window.notebookConfig.APIProxy) {
             url = window.notebookConfig.APIProxy + url.replace("://", "/");
         }
+        options = options || {};
+        options.headers = options.headers || {};
+        if (!options.headers["X-Requested-With"])
+            options.headers["X-Requested-With"] = 'API Notebook';
         var response = await fetch(url, options);
         // todo: add error handling
         var json = await response.json();

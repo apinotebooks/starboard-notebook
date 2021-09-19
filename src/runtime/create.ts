@@ -282,6 +282,10 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
       url = (window as any).notebookConfig.APIProxy + url.replace("://","/");
     }
 
+    options = options || {}; 
+    options.headers = options.headers || {};    
+    if(!options.headers["X-Requested-With"]) options.headers["X-Requested-With"] = 'API Notebook';
+
     var response = await fetch(url, options);
 
     // todo: add error handling
