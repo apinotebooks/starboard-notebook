@@ -241,6 +241,15 @@ export function setupRuntime(notebook) {
         }
         options = options || {};
         options.headers = options.headers || {};
+        // provide list of headers explicitly defined in fetch
+        var proxyHeaders = "";
+        for (var header in options.headers) {
+            proxyHeaders += "," + header;
+        }
+        if (proxyHeaders.indexOf(",") == 0)
+            proxyHeaders = proxyHeaders.substring(1);
+        if (!options.headers["X-Fetch-Headers"])
+            options.headers["X-Fetch-Headers"] = proxyHeaders;
         if (!options.headers["X-Requested-With"])
             options.headers["X-Requested-With"] = 'API Notebook';
         var response = await fetch(url, options);
