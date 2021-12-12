@@ -11,7 +11,7 @@
     "baseUrl": ".",
     "declaration": true,
     "sourceMap": true,
-    "strict": true,
+    "strict": false,
     "outDir": "./dist",
     "skipLibCheck": true,
     "esModuleInterop": false,
