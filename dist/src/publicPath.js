@@ -1,4 +1,3 @@
-"use strict";
 function getCurrentScriptPrefix() {
     const cs = document.currentScript;
     if (cs) {

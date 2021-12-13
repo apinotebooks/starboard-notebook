@@ -12,9 +12,9 @@ export declare class Field {
     constructor(options: FieldOptions);
     read(dom: {
         value: string | null | undefined;
-    }): string | null | undefined;
-    validateType(_value: any): undefined;
-    validate(value: any): string | undefined;
+    }): string;
+    validateType(_value: any): any;
+    validate(value: any): any;
     clean(value: any): any;
 }
 export declare class TextField extends Field {

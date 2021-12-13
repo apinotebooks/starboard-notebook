@@ -239,8 +239,7 @@ export function createMarkdownParser(schema) {
         list_item: { block: "list_item" },
         bullet_list: { block: "bullet_list", getAttrs: (_, tokens, i) => ({ tight: listIsTight(tokens, i) }) },
         ordered_list: {
-            block: "ordered_list",
-            getAttrs: (tok, tokens, i) => ({
+            block: "ordered_list", getAttrs: (tok, tokens, i) => ({
                 order: +tok.attrGet("start") || 1,
                 tight: listIsTight(tokens, i)
             })
@@ -250,8 +249,7 @@ export function createMarkdownParser(schema) {
         fence: { block: "code_block", getAttrs: (tok) => ({ params: tok.info || "" }), noCloseToken: true },
         hr: { node: "horizontal_rule" },
         image: {
-            node: "image",
-            getAttrs: (tok) => ({
+            node: "image", getAttrs: (tok) => ({
                 src: tok.attrGet("src"),
                 title: tok.attrGet("title") || null,
                 alt: tok.children[0] && tok.children[0].content || null
@@ -263,8 +261,7 @@ export function createMarkdownParser(schema) {
         em: { mark: "em" },
         strong: { mark: "strong" },
         link: {
-            mark: "link",
-            getAttrs: (tok) => ({
+            mark: "link", getAttrs: (tok) => ({
                 href: tok.attrGet("href"),
                 title: tok.attrGet("title") || null
             })

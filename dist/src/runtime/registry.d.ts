@@ -14,7 +14,7 @@ export declare class MapRegistry<S, T> {
     subscribe(handler: MapRegistryListenerFunction<S, T>): void;
     unsubscribe(handler: MapRegistryListenerFunction<S, T>): void;
     private notifyHandlers;
-    get(key: S): T | undefined;
+    get(key: S): T;
     /**
      * This does *not* trigger a register event, so cells already present with this cell type will not switch automatically.
      * Use register instead.

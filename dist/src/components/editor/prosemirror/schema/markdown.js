@@ -116,7 +116,8 @@ export const markdownSchema = {
             toDOM() { return ["em"]; }
         },
         strong: {
-            parseDOM: [{ tag: "b" }, { tag: "strong" }, { style: "font-weight", getAttrs: (value) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null }],
+            parseDOM: [{ tag: "b" }, { tag: "strong" },
+                { style: "font-weight", getAttrs: (value) => /^(bold(er)?|[5-9]\d{2,})$/.test(value) && null }],
             toDOM() { return ["strong"]; }
         },
         link: {

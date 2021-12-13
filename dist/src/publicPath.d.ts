@@ -1,1 +1,1 @@
-declare function getCurrentScriptPrefix(): string | undefined;
+declare function getCurrentScriptPrefix(): string;
