@@ -306,6 +306,10 @@ export function setupRuntime(notebook) {
         var response = await fetch(url, options);
         // todo: add error handling
         var json = await response.json();
+        if (!response.ok) {
+            if (Array.isArray(json))
+                json = { response: json };
+        }
         return json;
     };
     setupCommunicationWithParentFrame(rt);

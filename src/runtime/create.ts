@@ -283,62 +283,62 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
   (function (win, DateTime, _humanizeDuration) {
 
-    win.MD5 = function(source) {
+    win.MD5 = function (source) {
       const md5 = new _MD5();
       source = source.toLowerCase().trim();
       return md5.update(source).digest('hex');
     }
 
-    win.dateConvertTimezone = function(time, targetTz) {
+    win.dateConvertTimezone = function (time, targetTz) {
       return DateTime.fromISO(time).setZone(targetTz).toISO();
     }
-    
-    win.dateStringParse = function(time, sourceTz) {
+
+    win.dateStringParse = function (time, sourceTz) {
       if (!sourceTz) {
         return DateTime.fromISO(time).toUTC().toISO();
       }
-    
+
       return DateTime.fromISO(time, { zone: sourceTz }).toUTC().toISO();
     }
-    
-    win.humanizeDuration = function(startTime, endTime) {
+
+    win.humanizeDuration = function (startTime, endTime) {
       const duration = DateTime.fromISO(endTime).diff(DateTime.fromISO(startTime)).values.milliseconds;
       return _humanizeDuration(duration, { largest: 2 });
     }
-    
-    win.humanizeRelative = function(time) {
+
+    win.humanizeRelative = function (time) {
       return DateTime.fromISO(time).toRelative();
-    }    
-    
-    win.dateToIsoUri = function(date) {
-        var tzo = -date.getTimezoneOffset(),
-          dif = tzo >= 0 ? "+" : "-",
-          pad = function (num) {
-            var norm = Math.floor(Math.abs(num));
-            return (norm < 10 ? "0" : "") + norm;
-          };
-    
-        return encodeURIComponent(
-          date.getFullYear() +
-            "-" +
-            pad(date.getMonth() + 1) +
-            "-" +
-            pad(date.getDate()) +
-            "T" +
-            pad(date.getHours()) +
-            ":" +
-            pad(date.getMinutes()) +
-            ":" +
-            pad(date.getSeconds()) +
-            dif +
-            pad(tzo / 60) +
-            ":" +
-            pad(tzo % 60)
-        );
     }
-  
+
+    win.dateToIsoUri = function (date) {
+      var tzo = -date.getTimezoneOffset(),
+        dif = tzo >= 0 ? "+" : "-",
+        pad = function (num) {
+          var norm = Math.floor(Math.abs(num));
+          return (norm < 10 ? "0" : "") + norm;
+        };
+
+      return encodeURIComponent(
+        date.getFullYear() +
+        "-" +
+        pad(date.getMonth() + 1) +
+        "-" +
+        pad(date.getDate()) +
+        "T" +
+        pad(date.getHours()) +
+        ":" +
+        pad(date.getMinutes()) +
+        ":" +
+        pad(date.getSeconds()) +
+        dif +
+        pad(tzo / 60) +
+        ":" +
+        pad(tzo % 60)
+      );
+    }
+
   }(window as any, DateTime, _humanizeDuration));
-  
+
 
   // fetchJSON - fetch wrapper with global error handling
   (window as any).fetchJSON = async function (url: string, options: any) {
@@ -366,6 +366,10 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     // todo: add error handling
 
     var json = await response.json();
+
+    if (!response.ok) {
+      if (Array.isArray(json)) json = { response: json };
+    }
 
     return json;
 
