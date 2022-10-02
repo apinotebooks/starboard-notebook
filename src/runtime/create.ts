@@ -362,13 +362,12 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     if (!options.headers["X-Requested-With"]) options.headers["X-Requested-With"] = 'API Notebook';
 
     var response = await fetch(url, options);
-
-    // todo: add error handling
-
+  
     var json = await response.json();
 
     if (!response.ok) {
       if (Array.isArray(json)) json = { response: json };
+      json.ErrorCode = response.status;
     }
 
     return json;
