@@ -283,6 +283,16 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
   (function (win, DateTime, _humanizeDuration) {
 
+    win.formatTimeLocal = function (date) {
+      const locale = navigator.language;
+      const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+      return new Intl.DateTimeFormat(locale, {
+        hour: 'numeric', minute: 'numeric',
+        timeZone
+      }).format(new Date(date));
+    }
+
     win.MD5 = function (source) {
       const md5 = new _MD5();
       source = source.toLowerCase().trim();
@@ -362,7 +372,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
     if (!options.headers["X-Requested-With"]) options.headers["X-Requested-With"] = 'API Notebook';
 
     var response = await fetch(url, options);
-  
+
     var json = await response.json();
 
     if (!response.ok) {

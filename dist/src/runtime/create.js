@@ -242,6 +242,14 @@ export function setupRuntime(notebook) {
     updateCellsWhenCellDefinitionChanges(rt);
     window.runtime = rt;
     (function (win, DateTime, _humanizeDuration) {
+        win.formatTimeLocal = function (date) {
+            const locale = navigator.language;
+            const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone;
+            return new Intl.DateTimeFormat(locale, {
+                hour: 'numeric', minute: 'numeric',
+                timeZone
+            }).format(new Date(date));
+        };
         win.MD5 = function (source) {
             const md5 = new _MD5();
             source = source.toLowerCase().trim();
