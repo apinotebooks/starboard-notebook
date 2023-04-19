@@ -292,34 +292,69 @@ export function setupRuntime(notebook) {
                 ":" +
                 pad(tzo % 60));
         };
-    }(window, DateTime, _humanizeDuration));
-    // fetchJSON - fetch wrapper with global error handling
-    window.fetchJSON = async function (url, options) {
-        if (window.notebookConfig && window.notebookConfig.APIProxy) {
-            url = window.notebookConfig.APIProxy + url.replace("://", "/");
-        }
-        options = options || {};
-        options.headers = options.headers || {};
-        // provide list of headers explicitly defined in fetch
-        var proxyHeaders = "";
-        for (var header in options.headers) {
-            proxyHeaders += "," + header;
-        }
-        if (proxyHeaders.indexOf(",") == 0)
-            proxyHeaders = proxyHeaders.substring(1);
-        if (!options.headers["X-Fetch-Headers"])
-            options.headers["X-Fetch-Headers"] = proxyHeaders;
-        if (!options.headers["X-Requested-With"])
-            options.headers["X-Requested-With"] = 'API Notebook';
-        var response = await fetch(url, options);
-        var json = await response.json();
-        if (!response.ok) {
+        // fetchJSON - fetch wrapper with global error handling
+        win.fetchJSON = async function (url, options) {
+            if (window.notebookConfig && window.notebookConfig.APIProxy) {
+                url = window.notebookConfig.APIProxy + url.replace("://", "/");
+            }
+            options = options || {};
+            options.headers = options.headers || {};
+            // provide list of headers explicitly defined in fetch
+            var proxyHeaders = "";
+            for (var header in options.headers) {
+                proxyHeaders += "," + header;
+            }
+            if (proxyHeaders.indexOf(",") == 0)
+                proxyHeaders = proxyHeaders.substring(1);
+            if (!options.headers["X-Fetch-Headers"])
+                options.headers["X-Fetch-Headers"] = proxyHeaders;
+            if (!options.headers["X-Requested-With"])
+                options.headers["X-Requested-With"] = 'API Notebook';
+            var response = await fetch(url, options);
+            var json = await response.json();
             if (Array.isArray(json))
                 json = { response: json };
-            json.ErrorCode = response.status;
-        }
-        return json;
-    };
+            if (!response.ok) {
+                json.ErrorCode = response.status;
+            }
+            if (win.handleResponse)
+                json = await win.handleResponse(response);
+            return json;
+        };
+        win.fetchJSONOA = async function (idOrParamsOrUndefined, paramsOrUndefined) {
+            var body = { Context: window.__context };
+            if (idOrParamsOrUndefined) {
+                if (typeof idOrParamsOrUndefined === 'string') {
+                    // First param is ID
+                    body.id = idOrParamsOrUndefined;
+                }
+                else {
+                    // First param is opts
+                    body.opts = JSON.stringify(idOrParamsOrUndefined);
+                }
+            }
+            if (paramsOrUndefined) {
+                // Second param is opts
+                body.opts = JSON.stringify(paramsOrUndefined);
+            }
+            var url = window.notebookConfig.APIProxy.replace('/proxy', '/openapi/invoke');
+            var response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(body),
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'API Notebook',
+                },
+                mode: 'cors',
+                credentials: 'include'
+            });
+            var json = await response.json();
+            if (win.handleResponse)
+                json = await win.handleResponse(response);
+            return json;
+        };
+    }(window, DateTime, _humanizeDuration));
     setupCommunicationWithParentFrame(rt);
     registerDefaultPlugins(rt);
     return rt;
