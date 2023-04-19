@@ -31,9 +31,9 @@ export class JavascriptEvaluator {
             let worker = new AsyncFunction('request', 'context', `${code}
       
       return await handleRequest(request, context);`);
-            // *todo* add context provider, global config 
-            window.__context = context;
+            // *todo* add context provider, global config       
             var context = window.runtime.variables;
+            window.__context = context;
             if (context._token && !context.token) {
                 context.token = context._token;
                 delete context._token;

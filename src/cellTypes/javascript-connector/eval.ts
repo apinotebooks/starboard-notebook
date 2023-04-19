@@ -61,9 +61,9 @@ export class JavascriptEvaluator {
       return await handleRequest(request, context);`);
 
 
-      // *todo* add context provider, global config 
-      (window as any).__context = context;
+      // *todo* add context provider, global config       
       var context = window.runtime.variables;
+      (window as any).__context = context;
       if (context._token && !context.token) {
         context.token = context._token;
         delete context._token;
