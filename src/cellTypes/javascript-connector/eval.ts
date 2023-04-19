@@ -62,6 +62,7 @@ export class JavascriptEvaluator {
 
 
       // *todo* add context provider, global config 
+      (window as any).__context = context;
       var context = window.runtime.variables;
       if (context._token && !context.token) {
         context.token = context._token;
