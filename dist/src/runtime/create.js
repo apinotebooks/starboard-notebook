@@ -318,7 +318,7 @@ export function setupRuntime(notebook) {
                 json.ErrorCode = response.status;
             }
             if (win.handleResponse)
-                json = await win.handleResponse(response);
+                json = await win.handleResponse(json);
             return json;
         };
         win.fetchJSONOA = async function (idOrParamsOrUndefined, paramsOrUndefined) {
@@ -351,7 +351,7 @@ export function setupRuntime(notebook) {
             });
             var json = await response.json();
             if (win.handleResponse)
-                json = await win.handleResponse(response);
+                json = await win.handleResponse(json);
             return json;
         };
     }(window, DateTime, _humanizeDuration));

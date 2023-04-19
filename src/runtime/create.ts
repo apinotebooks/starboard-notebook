@@ -378,7 +378,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
         json.ErrorCode = response.status;
       }
 
-      if(win.handleResponse) json = await win.handleResponse(response);
+      if(win.handleResponse) json = await win.handleResponse(json);
 
       return json;
     }
@@ -418,7 +418,7 @@ export function setupRuntime(notebook: StarboardNotebookElement): Runtime {
 
       var json = await response.json();
 
-      if(win.handleResponse) json = await win.handleResponse(response);
+      if(win.handleResponse) json = await win.handleResponse(json);
 
       return json;
     }
